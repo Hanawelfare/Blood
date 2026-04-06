@@ -12,601 +12,554 @@
             --primary: #dc2626;
             --blue: #2563eb;
             --green: #16a34a;
+            --purple: #7c3aed;
             --gray: #64748b;
             --bg: #f8fafc;
             --white: #ffffff;
+            --soft-blue: #eff6ff;
         }
 
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Sarabun', sans-serif;
-            background: #f1f5f9;
-            color: #1e293b;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: 'Sarabun', sans-serif; background: #f1f5f9; color: #1e293b; }
 
         .app-container {
             max-width: 480px;
             margin: 0 auto;
-            background: var(--white);
+            background: var(--bg);
             min-height: 100vh;
             position: relative;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
         }
 
-        /* --- Views Management --- */
-        .view { display: none; padding-bottom: 2rem; animation: fadeIn 0.3s ease; }
+        .view { display: none; padding-bottom: 5rem; animation: fadeIn 0.3s ease; }
         .view.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- Components --- */
-        .header {
-            background: var(--primary);
-            color: white;
-            padding: 1.2rem 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            border-radius: 0 0 1.5rem 1.5rem;
-            transition: background 0.3s;
-        }
-
-        .back-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            padding: 8px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-        }
-
-        /* --- Home View Styles --- */
-        .hero {
+        .header { background: var(--primary); color: white; padding: 1rem 1.2rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 1000; }
+        .hero-card {
             background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
-            padding: 4rem 2rem 5rem;
+            padding: 2.5rem 1.5rem 4rem;
             text-align: center;
             color: white;
-            border-radius: 0 0 3.5rem 3.5rem;
-            box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.3);
+            border-bottom-left-radius: 2.5rem;
+            border-bottom-right-radius: 2.5rem;
+            position: relative;
+            z-index: 10;
         }
 
-        .hero-icon {
-            background: rgba(255,255,255,0.2);
-            width: 85px;
-            height: 85px;
-            border-radius: 2.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .menu-grid {
-            padding: 0 1.5rem;
-            margin-top: -3rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
+        .menu-list { padding: 0 1.5rem; margin-top: -2.5rem; display: flex; flex-direction: column; gap: 1rem; position: relative; z-index: 20; }
         .menu-item {
-            background: white;
-            padding: 1.2rem;
-            border-radius: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-            border: 1px solid #f1f5f9;
-            transition: transform 0.1s;
+            background: white; padding: 1.2rem; border-radius: 1.5rem; display: flex; align-items: center; gap: 1.2rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s;
         }
-        .menu-item:active { transform: scale(0.98); }
+        .menu-item:active { transform: scale(0.97); }
 
-        /* --- Form Styles --- */
-        .form-content { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
-        .label-tag { font-size: 0.8rem; font-weight: bold; color: var(--gray); margin-bottom: 0.4rem; display: block; padding-left: 0.2rem; }
+        .form-container { padding: 1.5rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        .field-label { font-size: 0.85rem; font-weight: bold; color: var(--gray); margin-bottom: 0.4rem; display: block; }
+        .input-style {
+            width: 100%; padding: 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 1rem; font-size: 1rem; outline: none;
+            transition: 0.2s; background: white;
+        }
+        .input-style:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1); }
+        .input-style:disabled { background: #f1f5f9; color: #64748b; cursor: not-allowed; }
+
+        .status-card-new { background: white; border-radius: 1.8rem; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #f1f5f9; }
+        .status-header-label { background: #f8fafc; padding: 0.6rem 1.5rem; font-size: 0.75rem; color: var(--gray); font-weight: bold; border-bottom: 1px solid #f1f5f9; }
+        .info-row { padding: 1rem 1.5rem; border-bottom: 1px dashed #f1f5f9; }
+        .appointment-box { background: var(--soft-blue); margin: 1rem; padding: 1.2rem; border-radius: 1.5rem; display: flex; gap: 1rem; align-items: center; }
+        .date-badge { background: var(--blue); color: white; padding: 0.8rem; border-radius: 1.2rem; min-width: 85px; text-align: center; }
+
+        .stat-card { background: white; padding: 1.2rem; border-radius: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .progress-container { width: 100%; height: 8px; background: #f1f5f9; border-radius: 10px; overflow: hidden; margin: 8px 0; }
+        .progress-bar { height: 100%; background: var(--primary); border-radius: 10px; transition: width 0.5s ease; }
+        .progress-bar.full { background: #991b1b; }
+
+        .blood-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+        .blood-btn { padding: 0.7rem; border-radius: 0.8rem; border: 1.5px solid #e2e8f0; background: white; font-weight: bold; cursor: pointer; }
+        .blood-btn.selected { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .date-card { background: white; padding: 1rem; border-radius: 1.2rem; border: 2px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; cursor: pointer; }
+        .date-card.selected { border-color: var(--primary); background: #fee2e2; }
+
+        .slot-btn { display: flex; justify-content: space-between; padding: 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 1rem; margin-bottom: 0.5rem; cursor: pointer; background: white; }
+        .slot-btn.selected { background: var(--primary); color: white; border-color: var(--primary); }
+        .slot-btn.full { opacity: 0.5; cursor: not-allowed; background: #f1f5f9; color: #94a3b8; }
+
+        .submit-btn { width: 100%; padding: 1.2rem; border-radius: 1.5rem; border: none; background: #cbd5e1; color: #94a3b8; font-weight: bold; font-size: 1.1rem; margin-top: 1.5rem; cursor: not-allowed; transition: 0.3s; }
+        .submit-btn.active { background: var(--primary); color: white; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4); }
+
+        #loader {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            z-index: 3000; align-items: center; justify-content: center; flex-direction: column;
+        }
+        .spinner {
+            width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid white; border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        #success-modal {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            z-index: 2000; align-items: center; justify-content: center; padding: 2rem;
+        }
+        .modal-content { background: white; width: 100%; max-width: 340px; padding: 2.5rem 1.5rem; border-radius: 2rem; text-align: center; }
         
-        .input-field {
-            width: 100%;
-            padding: 0.9rem;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 1rem;
-            background: white;
-            outline: none;
-            transition: 0.2s;
-            font-size: 1rem;
-            font-family: inherit;
-        }
-        .input-field:focus { border-color: var(--primary); }
-        .input-field:read-only { background: #f8fafc; color: #64748b; cursor: default; }
-
-        .btn-submit {
-            width: 100%;
-            padding: 1.1rem;
-            border-radius: 1.2rem;
-            border: none;
-            color: white;
-            font-weight: bold;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            background: var(--primary);
-            box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
-        }
-        .btn-submit:disabled { background: #e2e8f0 !important; color: #94a3b8; cursor: not-allowed; box-shadow: none; }
-
-        /* Selection Grids */
-        .selection-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
-        .chip {
-            padding: 0.8rem;
-            text-align: center;
-            border-radius: 1rem;
-            border: 2px solid #e2e8f0;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.2s;
-            background: white;
-        }
-        .chip.selected { background: var(--primary); color: white; border-color: var(--primary); }
-
-        .day-card {
-            padding: 1.2rem;
-            border: 2.5px solid #e2e8f0;
-            border-radius: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.2s;
-            background: white;
-        }
-
-        .slot-item {
-            padding: 1rem;
-            border: 1.5px solid #f1f5f9;
-            border-radius: 1rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-        }
-        .slot-item.full { opacity: 0.5; cursor: not-allowed; background: #f1f5f9; }
-        .slot-item.selected { color: white; border-color: transparent; }
-
-        /* Utils */
-        .spinner { animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        #loading-overlay { position: absolute; right: 15px; top: 12px; color: var(--primary); display: none; }
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; }
+        .badge-full { background: #fee2e2; color: #dc2626; }
+        .badge-open { background: #dcfce7; color: #16a34a; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    
-    <!-- View: Home -->
-    <div id="view-home" class="view active">
-        <div class="hero">
-            <div class="hero-icon"><i data-lucide="heart" size="45" fill="white"></i></div>
-            <h1 style="margin:0; font-size: 1.7rem; font-weight: 800;">ลงทะเบียนบริจาคโลหิต</h1>
-            <p style="margin: 0.5rem 0 0; opacity: 0.8;">HANA Blood Donation 2026</p>
+<div id="loader">
+    <div class="spinner"></div>
+    <p style="margin-top: 1.5rem; font-weight: bold; color: white; letter-spacing: 1px;">กำลังประมวลผล...</p>
+</div>
+
+<div id="success-modal">
+    <div class="modal-content">
+        <div style="background:#dcfce7; color:var(--green); width:70px; height:70px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem;">
+            <i data-lucide="check-circle-2" size="40"></i>
         </div>
-        <div class="menu-grid">
+        <h2 style="margin:0 0 0.5rem; color:#1e293b;">บันทึกสำเร็จ!</h2>
+        <p style="color:var(--gray); font-size:0.95rem; line-height:1.5; margin-bottom:2rem;">ข้อมูลของคุณได้รับการบันทึกเรียบร้อยแล้ว</p>
+        <button onclick="closeSuccess()" style="width:100%; padding:1rem; border-radius:1rem; border:none; background:var(--primary); color:white; font-weight:bold; cursor:pointer;">ตกลง</button>
+    </div>
+</div>
+
+<div class="app-container">
+
+    <!-- HOME VIEW -->
+    <div id="view-home" class="view active">
+        <div class="hero-card">
+            <button onclick="navigate('admin-login')" style="position:absolute; top:1.2rem; right:1.2rem; background:rgba(0,0,0,0.1); border:none; color:white; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                <i data-lucide="lock" size="18"></i>
+            </button>
+            <div style="background:rgba(255,255,255,0.2); width:80px; height:80px; border-radius:2rem; display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                <i data-lucide="heart" size="44" fill="white"></i>
+            </div>
+            <h1 style="margin:0; font-size: 1.6rem; font-weight: 800;">ลงทะเบียนบริจาคโลหิต</h1>
+            <p style="margin: 0.4rem 0 0; opacity: 0.9; font-size: 0.95rem;">Blood Donation 2026</p>
+        </div>
+
+        <div class="menu-list">
             <div class="menu-item" onclick="navigate('register')">
-                <div style="background:#fee2e2; padding:1rem; border-radius:1.2rem; color:#dc2626;"><i data-lucide="heart"></i></div>
-                <div><strong style="display:block; font-size:1.1rem;">ลงทะเบียนจองคิว</strong><small style="color:var(--gray)">กรอกรหัสพนักงานและเลือกเวลา</small></div>
+                <div style="background:#fee2e2; color:var(--primary); padding:0.8rem; border-radius:1rem;"><i data-lucide="plus-circle"></i></div>
+                <div><strong style="display:block;">ลงทะเบียนเลือกรอบบริจาคโลหิต</strong><small style="color:var(--gray)">นัดหมายบริจาคโลหิต</small></div>
             </div>
             <div class="menu-item" onclick="navigate('status')">
-                <div style="background:#dbeafe; padding:1rem; border-radius:1.2rem; color:#2563eb;"><i data-lucide="search"></i></div>
-                <div><strong style="display:block; font-size:1.1rem;">เช็คสถานะการจอง</strong><small style="color:var(--gray)">ตรวจสอบข้อมูลที่คุณลงไว้</small></div>
+                <div style="background:#dbeafe; color:var(--blue); padding:0.8rem; border-radius:1rem;"><i data-lucide="search"></i></div>
+                <div><strong style="display:block;">เช็คสถานะการจอง</strong><small style="color:var(--gray)">ดูข้อมูลนัดหมาย</small></div>
             </div>
             <div class="menu-item" onclick="navigate('slots')">
-                <div style="background:#dcfce7; padding:1rem; border-radius:1.2rem; color:#16a34a;"><i data-lucide="users"></i></div>
-                <div><strong style="display:block; font-size:1.1rem;">ดูจำนวนรอบที่ว่าง</strong><small style="color:var(--gray)">เช็คโควตาแบบ Real-time</small></div>
+                <div style="background:#dcfce7; color:var(--green); padding:0.8rem; border-radius:1rem;"><i data-lucide="users"></i></div>
+                <div><strong style="display:block;">ตรวจสอบที่ว่าง</strong><small style="color:var(--gray)">เช็คโควตาปัจจุบัน</small></div>
             </div>
         </div>
     </div>
 
-    <!-- View: Register -->
+    <!-- REGISTER VIEW -->
     <div id="view-register" class="view">
-        <div class="header" id="reg-header">
-            <button class="back-btn" onclick="navigate('home')"><i data-lucide="chevron-left" size="20"></i></button>
-            <h1 style="margin:0; font-size: 1.1rem; font-weight: bold;">ลงทะเบียนจองคิว</h1>
+        <div class="header">
+            <button onclick="navigate('home')" style="background:none; border:none; color:white; cursor:pointer;"><i data-lucide="chevron-left"></i></button>
+            <span style="font-weight: bold;">ลงทะเบียนบริจาคโลหิต</span>
         </div>
-        <form class="form-content" id="regForm">
-            <div>
-                <label class="label-tag">รหัสพนักงาน (6 หลัก)</label>
-                <div style="position:relative;">
-                    <input class="input-field" type="text" id="empId" maxlength="6" placeholder="ระบุรหัสพนักงาน 6 หลัก" required oninput="validateForm()">
-                    <div id="loading-overlay" class="spinner"><i data-lucide="loader-2" size="20"></i></div>
+        <div class="form-container">
+            <div class="form-group">
+                <label class="field-label">รหัสพนักงาน (6 หลัก)</label>
+                <input class="input-style" id="empId" maxlength="6" inputmode="numeric" placeholder="ระบุรหัสพนักงาน 6 หลัก" oninput="handleEmpIdChange(this)">
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem;" class="form-group">
+                <div><label class="field-label">ชื่อ</label><input class="input-style" id="firstName" placeholder="ชื่อ" oninput="validateInput()"></div>
+                <div><label class="field-label">นามสกุล</label><input class="input-style" id="lastName" placeholder="นามสกุล" oninput="validateInput()"></div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem;" class="form-group">
+                <div><label class="field-label">แผนก</label><input class="input-style" id="dept" placeholder="แผนก" oninput="validateInput()"></div>
+                <div><label class="field-label">เบอร์ภายใน</label><input class="input-style" id="phone" maxlength="4" inputmode="numeric" placeholder="xxxx" oninput="validateInput()"></div>
+            </div>
+            <div class="form-group">
+                <label class="field-label">กรุ๊ปเลือด</label>
+                <div class="blood-grid">
+                    <button class="blood-btn" onclick="setBlood('A', this)">A</button>
+                    <button class="blood-btn" onclick="setBlood('B', this)">B</button>
+                    <button class="blood-btn" onclick="setBlood('O', this)">O</button>
+                    <button class="blood-btn" onclick="setBlood('AB', this)">AB</button>
                 </div>
             </div>
-
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
-                <div><label class="label-tag">ชื่อ</label><input class="input-field" id="firstName" placeholder="กรอกชื่อ" oninput="validateForm()"></div>
-                <div><label class="label-tag">นามสกุล</label><input class="input-field" id="lastName" placeholder="กรอกนามสกุล" oninput="validateForm()"></div>
+            <div class="form-group">
+                <label class="field-label">เลือกวัน</label>
+                <div id="date-list"></div>
             </div>
-
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
-                <div><label class="label-tag">แผนก</label><input class="input-field" id="dept" placeholder="เช่น OP1,OP3,BSD1" oninput="validateForm()"></div>
-                <div>
-                    <label class="label-tag">เบอร์ภายใน (4 หลัก)</label>
-                    <input class="input-field" type="text" id="phone" maxlength="4" required placeholder="xxxx" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateForm();">
-                </div>
-            </div>
-
-            <div>
-                <label class="label-tag">กรุ๊ปเลือด</label>
-                <div class="selection-grid" id="blood-grid"></div>
-            </div>
-
-            <div>
-                <label class="label-tag">เลือกวันที่ (แยกตามทีม)</label>
-                <div id="day-list" style="display:flex; flex-direction:column; gap:0.8rem;"></div>
-            </div>
-
             <div id="slot-section" style="display:none;">
-                <label class="label-tag">เลือกรอบเวลา</label>
-                <div id="slot-list" style="display:flex; flex-direction:column; gap:0.6rem;"></div>
+                <label class="field-label">เลือกรอบเวลา</label>
+                <div id="slot-list"></div>
             </div>
-
-            <button type="submit" class="btn-submit" id="btnSubmit" disabled>ยืนยันลงทะเบียน</button>
-        </form>
+            <button class="submit-btn" id="submitBtn" onclick="submitForm()" disabled>บันทึกข้อมูล</button>
+        </div>
     </div>
 
-    <!-- View: Status Check -->
+    <!-- STATUS VIEW -->
     <div id="view-status" class="view">
-        <div class="header" style="background: var(--blue);">
-            <button class="back-btn" onclick="navigate('home')"><i data-lucide="chevron-left" size="20"></i></button>
-            <h1 style="margin:0; font-size: 1.1rem; font-weight: bold;">เช็คสถานะการจอง</h1>
+        <div class="header" style="background:var(--blue)">
+            <button onclick="navigate('home')" style="background:none; border:none; color:white; cursor:pointer;"><i data-lucide="chevron-left"></i></button>
+            <span style="font-weight: bold;">สถานะของฉัน</span>
         </div>
-        <div class="form-content">
-            <div style="display:flex; gap:0.8rem;">
-                <input class="input-field" id="searchEmpId" placeholder="กรอกรหัสพนักงาน 6 หลัก" onkeypress="if(event.key === 'Enter') handleSearch()">
-                <button onclick="handleSearch()" style="background:var(--blue); color:white; border:none; border-radius:1rem; padding:0 1.2rem; cursor:pointer;"><i data-lucide="search" size="20"></i></button>
+        <div class="form-container">
+            <div style="display:flex; gap:0.6rem; margin-bottom:1.5rem;">
+                <input class="input-style" id="searchId" maxlength="6" inputmode="numeric" placeholder="รหัสพนักงาน 6 หลัก" onkeypress="if(event.key==='Enter') searchRegistration()">
+                <button onclick="searchRegistration()" style="background:var(--blue); border:none; color:white; border-radius:1rem; padding:0 1.2rem; cursor:pointer;"><i data-lucide="search" size="20"></i></button>
             </div>
             <div id="search-result"></div>
         </div>
     </div>
 
-    <!-- View: Real-time Slots -->
-    <div id="view-slots" class="view">
-        <div class="header" style="background: var(--green);">
-            <button class="back-btn" onclick="navigate('home')"><i data-lucide="chevron-left" size="20"></i></button>
-            <h1 style="margin:0; font-size: 1.1rem; font-weight: bold;">สถานะที่ว่าง (Real-time)</h1>
+    <!-- ADMIN LOGIN -->
+    <div id="view-admin-login" class="view">
+        <div class="header" style="background:var(--purple)">
+            <button onclick="navigate('home')" style="background:none; border:none; color:white; cursor:pointer;"><i data-lucide="chevron-left"></i></button>
+            <span style="font-weight: bold;">สำหรับเจ้าหน้าที่</span>
         </div>
-        <div class="form-content" id="realtime-slot-container"></div>
+        <div class="form-container" style="text-align:center; padding-top:4rem;">
+            <i data-lucide="shield-check" size="48" style="color:var(--purple); margin-bottom:1rem;"></i>
+            <input type="password" id="adminPass" class="input-style" placeholder="รหัสผ่าน" style="text-align:center; max-width:260px; margin: 0 auto; display:block;" onkeypress="if(event.key==='Enter') doAdminLogin()">
+            <button class="submit-btn active" style="background:var(--purple); max-width:260px; margin-top:1.5rem;" onclick="doAdminLogin()">เข้าสู่ระบบ</button>
+        </div>
     </div>
 
-    <!-- View: Success -->
-    <div id="view-success" class="view">
-        <div style="text-align:center; padding: 6rem 2rem;">
-            <div style="background:#f0fdf4; width:110px; height:110px; border-radius:3.5rem; display:flex; align-items:center; justify-content:center; margin: 0 auto 2rem;">
-                <i data-lucide="check-circle" size="64" color="#16a34a"></i>
-            </div>
-            <h2 style="font-size:1.7rem; font-weight: 800; margin-bottom:0.5rem;">ลงทะเบียนสำเร็จ!</h2>
-            <p style="color:var(--gray); margin-bottom:3.5rem;">ระบบได้บันทึกข้อมูลของคุณเรียบร้อยแล้ว</p>
-            <button class="btn-submit" onclick="location.reload()">กลับสู่หน้าหลัก</button>
+    <!-- DASHBOARD VIEW -->
+    <div id="view-dashboard" class="view">
+        <div class="header" style="background:var(--purple)">
+            <button onclick="navigate('home')" style="background:none; border:none; color:white; cursor:pointer;"><i data-lucide="log-out"></i></button>
+            <span style="font-weight: bold;">สรุปรายงาน</span>
         </div>
+        <div class="form-container">
+            <div class="stat-card" style="text-align:center; background: linear-gradient(135deg, var(--purple) 0%, #4c1d95 100%); color:white; padding:1.5rem;">
+                <small style="opacity:0.8;">ผู้ลงทะเบียนทั้งหมด</small>
+                <div style="font-size:3.5rem; font-weight:800; line-height:1;" id="dash-total">0</div>
+            </div>
+            <div id="dash-days-detail"></div>
+        </div>
+    </div>
+
+    <!-- VIEW SLOTS -->
+    <div id="view-slots" class="view">
+        <div class="header" style="background:var(--green)">
+            <button onclick="navigate('home')" style="background:none; border:none; color:white; cursor:pointer;"><i data-lucide="chevron-left"></i></button>
+            <span style="font-weight: bold;">จำนวนที่ว่าง</span>
+        </div>
+        <div class="form-container" id="all-slots-view"></div>
     </div>
 
 </div>
 
 <script>
-    // --- Config ---
     const API_URL = "https://script.google.com/macros/s/AKfycbwTOQOH5LJHPTT6obxbWGe_TWytmy37W5_da_0oDmEVkmz84sfgYmGPGMd8CzvohH1D/exec";
+    
     const SCHEDULE = [
-        { day: 1, date: '23 Apr 2026', team: 'Team B', color: '#dc2626' },
-        { day: 2, date: '7 May 2026', team: 'Team A', color: '#2563eb' }
+        { date: '23 Apr 2026', team: 'Team B', color: '#dc2626', limit: 115 },
+        { date: '7 May 2026', team: 'Team A', color: '#2563eb', limit: 115 }
     ];
-    const TIME_SLOTS = [
-        { id: 1, time: '09:00 - 09:20', limit: 20 },
-        { id: 2, time: '09:20 - 09:40', limit: 20 },
-        { id: 3, time: '09:40 - 10:00', limit: 20 },
-        { id: 4, time: '10:00 - 10:20', limit: 15 },
-        { id: 5, time: '10:20 - 10:40', limit: 15 },
-        { id: 6, time: '10:40 - 11:00', limit: 15 },
-        { id: 7, time: '11:00 - 11:20', limit: 8 },
-        { id: 8, time: '11:20 - 11:40', limit: 2 },
+
+    const SLOTS = [
+        { time: '09:00 - 09:20', limit: 20 }, { time: '09:20 - 09:40', limit: 20 },
+        { time: '09:40 - 10:00', limit: 20 }, { time: '10:00 - 10:20', limit: 15 },
+        { time: '10:20 - 10:40', limit: 15 }, { time: '10:40 - 11:00', limit: 15 },
+        { time: '11:00 - 11:20', limit: 8 }, { time: '11:20 - 11:40', limit: 2 }
     ];
-    const BLOOD_GROUPS = ['A', 'B', 'O', 'AB', 'ไม่ทราบ'];
 
-    // --- State Management ---
-    let state = {
-        registrations: [],
-        selectedBlood: '',
-        selectedDay: null,
-        selectedSlot: null
-    };
+    let registry = [];
+    let state = { blood: '', day: null, time: '' };
 
-    // --- Core Functions ---
-    async function fetchData() {
+    async function loadAll() {
         try {
             const res = await fetch(`${API_URL}?action=getRegistrations`);
-            const data = await res.json();
-            if(Array.isArray(data)) {
-                state.registrations = data;
-                renderRealtimeSlots();
-                if(state.selectedDay) renderTimeSlots();
-            }
-        } catch(e) { console.error("Error fetching", e); }
+            registry = await res.json();
+            renderSlotsList();
+            if(document.getElementById('view-dashboard').classList.contains('active')) renderDash();
+            lucide.createIcons();
+        } catch(e) { console.error(e); }
     }
 
-    function navigate(viewName) {
+    function navigate(view) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.getElementById(`view-${viewName}`).classList.add('active');
-        window.scrollTo(0,0);
-        if(viewName === 'slots') renderRealtimeSlots();
-        if(viewName === 'status') {
-            document.getElementById('searchEmpId').value = '';
-            document.getElementById('search-result').innerHTML = '';
-        }
+        document.getElementById(`view-${view}`).classList.add('active');
+        if(view === 'register') resetForm();
+        if(view === 'dashboard') renderDash();
+        lucide.createIcons();
     }
 
-    const formatId = (id) => String(id || '').padStart(6, '0');
-
-    // --- UI Renderers ---
-    function initApp() {
-        lucide.createIcons();
-        
-        const bloodGrid = document.getElementById('blood-grid');
-        BLOOD_GROUPS.forEach(bg => {
-            const chip = document.createElement('div');
-            chip.className = 'chip';
-            chip.innerText = bg;
-            chip.onclick = () => {
-                document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-                chip.classList.add('selected');
-                state.selectedBlood = bg;
-                validateForm();
-            };
-            bloodGrid.appendChild(chip);
+    function resetForm() {
+        const fields = ['empId','firstName','lastName','dept','phone'];
+        fields.forEach(id => {
+            const el = document.getElementById(id);
+            el.value = '';
+            el.disabled = false;
         });
+        state = { blood: '', day: null, time: '' };
+        document.querySelectorAll('.blood-btn').forEach(b => b.classList.remove('selected'));
+        document.getElementById('slot-section').style.display = 'none';
+        renderDateOptions();
+        validateInput();
+    }
 
-        const dayList = document.getElementById('day-list');
-        SCHEDULE.forEach(day => {
-            const card = document.createElement('div');
-            card.className = 'day-card';
-            card.innerHTML = `
-                <div style="display:flex; align-items:center; gap:0.8rem;">
-                    <div style="background:${day.color}; color:white; padding:8px; border-radius:10px;"><i data-lucide="calendar" size="18"></i></div>
-                    <div>
-                        <div style="font-weight:bold; color:${day.color}">${day.date}</div>
-                        <div style="font-size:0.8rem; color:var(--gray)">${day.team}</div>
-                    </div>
-                </div>
-                <div class="check-mark" style="display:none;"><i data-lucide="check-circle" color="${day.color}"></i></div>
-            `;
-            card.onclick = () => {
-                document.querySelectorAll('.day-card').forEach(c => {
-                    c.style.borderColor = '#e2e8f0';
-                    c.style.background = 'white';
-                    c.querySelector('.check-mark').style.display = 'none';
-                });
-                card.style.borderColor = day.color;
-                card.style.background = `${day.color}10`;
-                card.querySelector('.check-mark').style.display = 'block';
+    async function handleEmpIdChange(el) {
+        const empId = el.value.trim();
+        const fName = document.getElementById('firstName');
+        const lName = document.getElementById('lastName');
+        const dept = document.getElementById('dept');
+        const phone = document.getElementById('phone');
+
+        // รีเซ็ตการล็อกถ้ามีการแก้ไขเลข (ลบออกเหลือ < 6)
+        if(empId.length < 6) {
+            fName.disabled = false;
+            lName.disabled = false;
+            dept.disabled = false;
+            validateInput();
+            return;
+        }
+
+        if(empId.length === 6) {
+            document.getElementById('loader').style.display = 'flex';
+            
+            // 1. ตรวจสอบในข้อมูลที่ลงทะเบียนไว้แล้ว (Registry)
+            const existing = registry.find(r => String(r.empId).padStart(6,'0') === empId);
+            if(existing) {
+                fName.value = existing.name.split(' ')[0] || '';
+                lName.value = existing.name.split(' ')[1] || '';
+                dept.value = existing.dept;
+                phone.value = existing.phone;
                 
-                state.selectedDay = day;
-                state.selectedSlot = null;
-                document.getElementById('reg-header').style.background = day.color;
-                renderTimeSlots();
-                validateForm();
-                lucide.createIcons();
-            };
-            dayList.appendChild(card);
-        });
+                // ล็อกช่องเมื่อพบข้อมูล
+                fName.disabled = true;
+                lName.disabled = true;
+                dept.disabled = true;
+                document.getElementById('loader').style.display = 'none';
+            } else {
+                // 2. ถ้าไม่เจอใน Registry ให้หาจากฐานข้อมูลพนักงานกลาง
+                try {
+                    const res = await fetch(`${API_URL}?action=getEmployee&empId=${empId}`);
+                    const data = await res.json();
+                    if(data && data.firstName) {
+                        fName.value = data.firstName;
+                        lName.value = data.lastName;
+                        dept.value = data.department;
+                        // ล็อกช่องเมื่อพบข้อมูล
+                        fName.disabled = true;
+                        lName.disabled = true;
+                        dept.disabled = true;
+                    } else {
+                        // ไม่พบข้อมูล ให้ผู้ใช้กรอกเองได้
+                        fName.value = '';
+                        lName.value = '';
+                        dept.value = '';
+                        fName.disabled = false;
+                        lName.disabled = false;
+                        dept.disabled = false;
+                    }
+                } catch(e) {
+                    fName.disabled = false;
+                    lName.disabled = false;
+                    dept.disabled = false;
+                } finally {
+                    document.getElementById('loader').style.display = 'none';
+                }
+            }
+        }
+        validateInput();
+    }
+
+    function setBlood(val, btn) {
+        state.blood = val;
+        document.querySelectorAll('.blood-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        validateInput();
+    }
+
+    function renderDateOptions() {
+        const container = document.getElementById('date-list');
+        container.innerHTML = SCHEDULE.map((d, i) => `
+            <div class="date-card ${state.day && state.day.date === d.date ? 'selected' : ''}" onclick="selectDay(${i})">
+                <div style="display:flex; align-items:center; gap:0.8rem">
+                    <div style="background:${d.color}; color:white; padding:8px; border-radius:10px;"><i data-lucide="calendar" size="18"></i></div>
+                    <div><b>${d.date}</b><br><small style="color:var(--gray)">${d.team}</small></div>
+                </div>
+                <i data-lucide="chevron-right" size="18"></i>
+            </div>
+        `).join('');
         lucide.createIcons();
-        fetchData();
-        setInterval(fetchData, 20000);
+    }
+
+    function selectDay(idx) {
+        state.day = SCHEDULE[idx];
+        state.time = '';
+        renderDateOptions();
+        renderTimeSlots();
+        document.getElementById('slot-section').style.display = 'block';
+        validateInput();
     }
 
     function renderTimeSlots() {
         const container = document.getElementById('slot-list');
-        document.getElementById('slot-section').style.display = 'block';
-        container.innerHTML = '';
-        
-        const day = state.selectedDay;
-        TIME_SLOTS.forEach(slot => {
-            const bookedCount = state.registrations.filter(r => r.date === day.date && r.time === slot.time).length;
-            const remaining = slot.limit - bookedCount;
-            const isFull = remaining <= 0;
-
-            const div = document.createElement('div');
-            div.className = `slot-item ${isFull ? 'full' : ''}`;
-            div.innerHTML = `
-                <div style="display:flex; align-items:center; gap:0.6rem;"><i data-lucide="clock" size="16"></i><strong>${slot.time}</strong></div>
-                <span style="font-size:0.8rem; font-weight:bold;">${isFull ? 'เต็มแล้ว' : 'ว่าง '+remaining+' ที่'}</span>
+        if(!state.day) return;
+        container.innerHTML = SLOTS.map(s => {
+            const taken = registry.filter(r => r.date === state.day.date && r.time === s.time).length;
+            const left = s.limit - taken;
+            const isFull = left <= 0;
+            return `
+                <div class="slot-btn ${isFull ? 'full' : ''} ${state.time === s.time ? 'selected' : ''}" 
+                     onclick="${isFull ? '' : `selectTime('${s.time}')`}">
+                    <span><b>${s.time}</b></span>
+                    <small>${isFull ? 'เต็ม' : `ว่าง ${left}`}</small>
+                </div>
             `;
-
-            if(!isFull) {
-                div.onclick = () => {
-                    document.querySelectorAll('.slot-item').forEach(s => {
-                        s.classList.remove('selected');
-                        s.style.background = 'white';
-                        s.style.color = 'inherit';
-                    });
-                    div.classList.add('selected');
-                    div.style.background = day.color;
-                    div.style.color = 'white';
-                    state.selectedSlot = slot;
-                    validateForm();
-                };
-            }
-            container.appendChild(div);
-        });
-        lucide.createIcons();
+        }).join('');
     }
 
-    function renderRealtimeSlots() {
-        const container = document.getElementById('realtime-slot-container');
-        container.innerHTML = '';
-        SCHEDULE.forEach(day => {
-            let html = `
-                <div style="border:1px solid #f1f5f9; border-radius:1.5rem; background:white; overflow:hidden; margin-bottom:1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                    <div style="background:${day.color}; padding:1rem 1.5rem; display:flex; justify-content:space-between; color:white; align-items:center;">
-                        <strong>${day.date}</strong><span style="background:rgba(255,255,255,0.2); padding:4px 12px; border-radius:20px; fontSize:0.8rem;">${day.team}</span>
-                    </div>
-                    <div style="padding:0.8rem 1.2rem;">
-            `;
-            TIME_SLOTS.forEach(slot => {
-                const count = state.registrations.filter(r => r.date === day.date && r.time === slot.time).length;
-                const remains = slot.limit - count;
-                html += `
-                    <div style="display:flex; justify-content:space-between; padding:0.8rem 0; border-bottom:1px solid #f8fafc">
-                        <span>${slot.time}</span>
-                        <span style="font-weight:bold; color:${remains <= 0 ? '#dc2626' : '#16a34a'}">${remains <= 0 ? 'เต็ม' : 'ว่าง '+remains}</span>
-                    </div>
-                `;
-            });
-            html += `</div></div>`;
-            container.innerHTML += html;
-        });
+    function selectTime(t) {
+        state.time = t;
+        renderTimeSlots();
+        validateInput();
     }
 
-    // --- Interaction Logic ---
-    document.getElementById('empId').addEventListener('input', async (e) => {
-        const val = e.target.value;
-        const firstNameInput = document.getElementById('firstName');
-        const lastNameInput = document.getElementById('lastName');
-        const deptInput = document.getElementById('dept');
-
-        if(val.length === 6) {
-            document.getElementById('loading-overlay').style.display = 'block';
-            try {
-                const res = await fetch(`${API_URL}?action=getEmployee&empId=${formatId(val)}`);
-                const emp = await res.json();
-                
-                if(emp && emp.firstName) {
-                    firstNameInput.value = emp.firstName;
-                    lastNameInput.value = emp.lastName;
-                    deptInput.value = emp.department;
-                    // ล็อกช่องเมื่อพบข้อมูล
-                    firstNameInput.readOnly = true;
-                    lastNameInput.readOnly = true;
-                    deptInput.readOnly = true;
-                } else {
-                    // ไม่พบข้อมูล: เปิดให้พิมพ์เอง
-                    firstNameInput.value = '';
-                    lastNameInput.value = '';
-                    deptInput.value = '';
-                    firstNameInput.readOnly = false;
-                    lastNameInput.readOnly = false;
-                    deptInput.readOnly = false;
-                    firstNameInput.focus();
-                }
-            } catch(e) {
-                console.error(e);
-            }
-            document.getElementById('loading-overlay').style.display = 'none';
-        } else {
-            // ยังพิมพ์ไม่ครบ 6 หลัก: ล้างข้อมูลและเปิดให้พิมพ์รอ
-            firstNameInput.readOnly = false;
-            lastNameInput.readOnly = false;
-            deptInput.readOnly = false;
-        }
-        validateForm();
-    });
-
-    function validateForm() {
-        const empId = document.getElementById('empId').value;
-        const firstName = document.getElementById('firstName').value;
-        const lastName = document.getElementById('lastName').value;
-        const dept = document.getElementById('dept').value;
-        const phone = document.getElementById('phone').value;
-        
-        const isReady = empId.length === 6 && 
-                        firstName.trim() !== '' && 
-                        lastName.trim() !== '' && 
-                        dept.trim() !== '' &&
-                        state.selectedBlood && 
-                        state.selectedDay && 
-                        state.selectedSlot &&
-                        phone.length > 0;
-                        
-        document.getElementById('btnSubmit').disabled = !isReady;
+    function validateInput() {
+        const d = (id) => document.getElementById(id).value.trim();
+        const isValid = d('empId').length === 6 && d('firstName') && d('phone') && state.blood && state.day && state.time;
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = !isValid;
+        btn.classList.toggle('active', isValid);
     }
 
-    document.getElementById('regForm').onsubmit = async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('btnSubmit');
-        if(btn.disabled) return;
-
-        btn.disabled = true;
-        btn.innerText = "กำลังบันทึก...";
-
-        const payload = {
+    async function submitForm() {
+        document.getElementById('loader').style.display = 'flex';
+        const data = {
             action: 'register',
-            empId: formatId(document.getElementById('empId').value),
-            name: `${document.getElementById('firstName').value} ${document.getElementById('lastName').value}`,
+            empId: document.getElementById('empId').value,
+            name: document.getElementById('firstName').value + " " + document.getElementById('lastName').value,
             dept: document.getElementById('dept').value,
-            blood: state.selectedBlood,
+            blood: state.blood,
             phone: document.getElementById('phone').value,
-            date: state.selectedDay.date,
-            time: state.selectedSlot.time
+            date: state.day.date,
+            time: state.time
         };
-
         try {
-            await fetch(API_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify(payload)
-            });
-            setTimeout(() => navigate('success'), 1500);
-        } catch(e) {
-            alert("เกิดข้อผิดพลาด");
-            btn.disabled = false;
-            btn.innerText = "ยืนยันลงทะเบียน";
+            await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+            await loadAll();
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('success-modal').style.display = 'flex';
+            lucide.createIcons();
+        } catch(e) { 
+            alert('Error'); 
+            document.getElementById('loader').style.display = 'none';
         }
-    };
+    }
 
-    function handleSearch() {
-        const input = document.getElementById('searchEmpId');
-        const id = formatId(input.value);
-        if(!input.value) return;
+    function closeSuccess() {
+        document.getElementById('success-modal').style.display = 'none';
+        navigate('home');
+    }
 
-        const map = new Map();
-        state.registrations.forEach(r => map.set(formatId(r.empId), r));
-        const found = map.get(id);
+    function searchRegistration() {
+        const idInput = document.getElementById('searchId').value;
+        if(!idInput) return;
+        const found = registry.find(r => String(r.empId).padStart(6,'0') === idInput.padStart(6,'0'));
         const container = document.getElementById('search-result');
         
         if(found) {
             container.innerHTML = `
-                <div style="border:2.5px solid var(--blue); border-radius:1.8rem; padding:1.5rem; background:white; margin-top:1.5rem; box-shadow: 0 10px 15px rgba(37,99,235,0.1);">
-                    <div style="text-align:center; margin-bottom:1.5rem;">
-                        <i data-lucide="check-circle" color="var(--blue)" size="54"></i>
-                        <h2 style="margin:0.5rem 0 0; font-size:1.4rem;">ลงทะเบียนแล้ว</h2>
+                <div class="status-card-new">
+                    <div class="status-header-label">รายละเอียดการนัดหมาย</div>
+                    <div class="info-row">
+                        <small style="color:var(--gray); display:block; font-size:0.75rem;">ชื่อ - นามสกุล</small><strong>${found.name}</strong>
                     </div>
-                    <div style="display:flex; flex-direction:column; gap:1rem; border-top:1px dashed #e2e8f0; padding-top:1.5rem;">
-                        <div><small style="color:var(--gray); display:block; font-size:0.75rem;">ชื่อ-นามสกุล / รหัส</small><strong>${found.name} (${id})</strong></div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-                            <div><small style="color:var(--gray); display:block; font-size:0.75rem;">กรุ๊ปเลือด</small><strong>${found.blood || '-'}</strong></div>
-                            <div><small style="color:var(--gray); display:block; font-size:0.75rem;">แผนก</small><strong>${found.dept}</strong></div>
+                    <div class="info-row" style="border-bottom:none;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div><small style="color:var(--gray); display:block; font-size:0.75rem;">รหัสพนักงาน</small><strong>${String(found.empId).padStart(6,'0')}</strong></div>
+                            <div style="text-align:right"><small style="color:var(--gray); display:block; font-size:0.75rem;">แผนก</small><strong>${found.dept}</strong></div>
                         </div>
-                        <div style="background:#f8fafc; padding:1.2rem; border-radius:1.2rem; display:flex; justify-content:space-between;">
-                            <div><small style="color:var(--gray); font-size:0.75rem;">วันที่นัดหมาย</small><div style="color:var(--blue); font-weight:bold;">${found.date}</div></div>
-                            <div style="text-align:right;"><small style="color:var(--gray); font-size:0.75rem;">ช่วงเวลา</small><div style="color:var(--blue); font-weight:bold;">${found.time}</div></div>
+                    </div>
+                    <div class="appointment-box">
+                        <div class="date-badge">
+                            <i data-lucide="calendar" size="18"></i>
+                            <div style="font-size:0.85rem; font-weight:bold;">${found.date}</div>
+                        </div>
+                        <div style="flex:1; padding-left:0.5rem; border-left:2px solid #dbeafe;">
+                            <small style="color:var(--gray); display:block; font-size:0.75rem;">เวลานัดหมาย</small>
+                            <strong style="color:var(--blue); font-size:1.2rem;">${found.time} น.</strong>
                         </div>
                     </div>
                 </div>
             `;
         } else {
-            container.innerHTML = `<div style="text-align:center; color:var(--gray); padding:3rem;"><i data-lucide="alert-circle" size="40" style="opacity:0.3; margin-bottom:1rem;"></i><br>ไม่พบข้อมูลการจอง</div>`;
+            container.innerHTML = `<p style="text-align:center; color:var(--gray); padding:2rem;">ไม่พบข้อมูลการลงทะเบียน</p>`;
         }
         lucide.createIcons();
     }
 
-    window.onload = initApp;
+    function renderDash() {
+        document.getElementById('dash-total').innerText = registry.length;
+        const container = document.getElementById('dash-days-detail');
+        container.innerHTML = SCHEDULE.map(day => {
+            const dayReg = registry.filter(r => r.date === day.date);
+            return `
+                <div class="stat-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem; padding-bottom:0.5rem; border-bottom:2px solid #f1f5f9;">
+                        <b>${day.date}</b>
+                        <span style="font-weight:bold; color:var(--purple)">${dayReg.length} / ${day.limit}</span>
+                    </div>
+                    ${SLOTS.map(slot => {
+                        const count = dayReg.filter(r => r.time === slot.time).length;
+                        const left = slot.limit - count;
+                        const percent = (count / slot.limit) * 100;
+                        const isFull = left <= 0;
+                        return `
+                            <div style="margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid #f8fafc;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:4px;">
+                                    <span>${slot.time}</span>
+                                    <span><b>${count}</b> / ${slot.limit}</span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar ${isFull ? 'full' : ''}" style="width: ${percent}%"></div>
+                                </div>
+                                <div style="display:flex; justify-content:flex-end;">
+                                    <span class="badge ${isFull ? 'badge-full' : 'badge-open'}">${isFull ? 'เต็ม' : `ว่าง ${left}`}</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderSlotsList() {
+        const container = document.getElementById('all-slots-view');
+        container.innerHTML = SCHEDULE.map(d => `
+            <div class="stat-card">
+                <div style="color:${d.color}; font-weight:bold; margin-bottom:0.8rem; border-bottom:1px solid #eee; padding-bottom:0.5rem;">${d.date} (${d.team})</div>
+                ${SLOTS.map(s => {
+                    const count = registry.filter(r => r.date === d.date && r.time === s.time).length;
+                    const left = s.limit - count;
+                    return `<div style="display:flex; justify-content:space-between; padding:4px 0;">
+                        <span style="font-size:0.85rem;">${s.time}</span>
+                        <b style="color:${left <= 0 ? '#ef4444' : '#16a34a'}">${left <= 0 ? 'เต็ม' : `ว่าง ${left}`}</b>
+                    </div>`;
+                }).join('')}
+            </div>
+        `).join('');
+    }
+
+    function doAdminLogin() {
+        if(document.getElementById('adminPass').value === 'hana1234') navigate('dashboard');
+        else alert('รหัสผ่านไม่ถูกต้อง');
+    }
+
+    window.onload = () => { 
+        loadAll(); 
+        setInterval(loadAll, 60000); 
+        lucide.createIcons();
+    };
 </script>
 
 </body>
