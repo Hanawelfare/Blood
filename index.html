@@ -128,7 +128,7 @@
             font-family: inherit;
         }
         .input-field:focus { border-color: var(--primary); }
-        .input-readonly { background: #f8fafc; cursor: default; }
+        .input-field:read-only { background: #f8fafc; color: #64748b; cursor: default; }
 
         .btn-submit {
             width: 100%;
@@ -227,19 +227,18 @@
             <div>
                 <label class="label-tag">รหัสพนักงาน (6 หลัก)</label>
                 <div style="position:relative;">
-                    <input class="input-field" type="text" id="empId" maxlength="6" placeholder="ระบุรหัสพนักงาน 6 หลัก" required>
+                    <input class="input-field" type="text" id="empId" maxlength="6" placeholder="ระบุรหัสพนักงาน 6 หลัก" required oninput="validateForm()">
                     <div id="loading-overlay" class="spinner"><i data-lucide="loader-2" size="20"></i></div>
                 </div>
             </div>
 
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
-                <div><label class="label-tag">ชื่อ</label><input class="input-field input-readonly" id="firstName" readonly placeholder="..."></div>
-                <div><label class="label-tag">นามสกุล</label><input class="input-field input-readonly" id="lastName" readonly placeholder="..."></div>
+                <div><label class="label-tag">ชื่อ</label><input class="input-field" id="firstName" placeholder="กรอกชื่อ" oninput="validateForm()"></div>
+                <div><label class="label-tag">นามสกุล</label><input class="input-field" id="lastName" placeholder="กรอกนามสกุล" oninput="validateForm()"></div>
             </div>
 
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
-                <div><label class="label-tag">แผนก</label><input class="input-field input-readonly" id="dept" readonly></div>
-                <!-- แก้ไขส่วนเบอร์โทรเป็นเบอร์ภายใน 4 หลัก -->
+                <div><label class="label-tag">แผนก</label><input class="input-field" id="dept" placeholder="เช่น OP1,OP3,BSD1" oninput="validateForm()"></div>
                 <div>
                     <label class="label-tag">เบอร์ภายใน (4 หลัก)</label>
                     <input class="input-field" type="text" id="phone" maxlength="4" required placeholder="xxxx" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateForm();">
@@ -360,7 +359,6 @@
     function initApp() {
         lucide.createIcons();
         
-        // Render Blood Chips
         const bloodGrid = document.getElementById('blood-grid');
         BLOOD_GROUPS.forEach(bg => {
             const chip = document.createElement('div');
@@ -375,7 +373,6 @@
             bloodGrid.appendChild(chip);
         });
 
-        // Render Day Cards
         const dayList = document.getElementById('day-list');
         SCHEDULE.forEach(day => {
             const card = document.createElement('div');
@@ -478,38 +475,65 @@
     }
 
     // --- Interaction Logic ---
-    document.getElementById('empId').oninput = async (e) => {
+    document.getElementById('empId').addEventListener('input', async (e) => {
         const val = e.target.value;
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
+        const deptInput = document.getElementById('dept');
+
         if(val.length === 6) {
             document.getElementById('loading-overlay').style.display = 'block';
             try {
                 const res = await fetch(`${API_URL}?action=getEmployee&empId=${formatId(val)}`);
                 const emp = await res.json();
-                if(emp.firstName) {
-                    document.getElementById('firstName').value = emp.firstName;
-                    document.getElementById('lastName').value = emp.lastName;
-                    document.getElementById('dept').value = emp.department;
+                
+                if(emp && emp.firstName) {
+                    firstNameInput.value = emp.firstName;
+                    lastNameInput.value = emp.lastName;
+                    deptInput.value = emp.department;
+                    // ล็อกช่องเมื่อพบข้อมูล
+                    firstNameInput.readOnly = true;
+                    lastNameInput.readOnly = true;
+                    deptInput.readOnly = true;
                 } else {
-                    alert("ไม่พบข้อมูลพนักงาน");
-                    document.getElementById('firstName').value = '';
+                    // ไม่พบข้อมูล: เปิดให้พิมพ์เอง
+                    firstNameInput.value = '';
+                    lastNameInput.value = '';
+                    deptInput.value = '';
+                    firstNameInput.readOnly = false;
+                    lastNameInput.readOnly = false;
+                    deptInput.readOnly = false;
+                    firstNameInput.focus();
                 }
-            } catch(e) {}
+            } catch(e) {
+                console.error(e);
+            }
             document.getElementById('loading-overlay').style.display = 'none';
         } else {
-            document.getElementById('firstName').value = '';
-            document.getElementById('lastName').value = '';
-            document.getElementById('dept').value = '';
+            // ยังพิมพ์ไม่ครบ 6 หลัก: ล้างข้อมูลและเปิดให้พิมพ์รอ
+            firstNameInput.readOnly = false;
+            lastNameInput.readOnly = false;
+            deptInput.readOnly = false;
         }
         validateForm();
-    };
+    });
 
     function validateForm() {
+        const empId = document.getElementById('empId').value;
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const dept = document.getElementById('dept').value;
         const phone = document.getElementById('phone').value;
-        const isReady = document.getElementById('firstName').value && 
+        
+        const isReady = empId.length === 6 && 
+                        firstName.trim() !== '' && 
+                        lastName.trim() !== '' && 
+                        dept.trim() !== '' &&
                         state.selectedBlood && 
                         state.selectedDay && 
                         state.selectedSlot &&
                         phone.length > 0;
+                        
         document.getElementById('btnSubmit').disabled = !isReady;
     }
 
