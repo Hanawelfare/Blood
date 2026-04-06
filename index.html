@@ -227,7 +227,7 @@
             <div>
                 <label class="label-tag">รหัสพนักงาน (6 หลัก)</label>
                 <div style="position:relative;">
-                    <input class="input-field" type="text" id="empId" maxlength="6" placeholder="เช่น 012345" required>
+                    <input class="input-field" type="text" id="empId" maxlength="6" placeholder="ระบุรหัสพนักงาน 6 หลัก" required>
                     <div id="loading-overlay" class="spinner"><i data-lucide="loader-2" size="20"></i></div>
                 </div>
             </div>
@@ -239,7 +239,11 @@
 
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
                 <div><label class="label-tag">แผนก</label><input class="input-field input-readonly" id="dept" readonly></div>
-                <div><label class="label-tag">เบอร์โทร</label><input class="input-field" type="tel" id="phone" required placeholder="0XX-XXXX"></div>
+                <!-- แก้ไขส่วนเบอร์โทรเป็นเบอร์ภายใน 4 หลัก -->
+                <div>
+                    <label class="label-tag">เบอร์ภายใน (4 หลัก)</label>
+                    <input class="input-field" type="text" id="phone" maxlength="4" required placeholder="xxxx" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateForm();">
+                </div>
             </div>
 
             <div>
@@ -269,7 +273,6 @@
         </div>
         <div class="form-content">
             <div style="display:flex; gap:0.8rem;">
-                <!-- เพิ่ม onkeypress เพื่อรองรับ Enter -->
                 <input class="input-field" id="searchEmpId" placeholder="กรอกรหัสพนักงาน 6 หลัก" onkeypress="if(event.key === 'Enter') handleSearch()">
                 <button onclick="handleSearch()" style="background:var(--blue); color:white; border:none; border-radius:1rem; padding:0 1.2rem; cursor:pointer;"><i data-lucide="search" size="20"></i></button>
             </div>
@@ -345,7 +348,6 @@
         document.getElementById(`view-${viewName}`).classList.add('active');
         window.scrollTo(0,0);
         if(viewName === 'slots') renderRealtimeSlots();
-        // Clear search if navigate to status
         if(viewName === 'status') {
             document.getElementById('searchEmpId').value = '';
             document.getElementById('search-result').innerHTML = '';
@@ -502,17 +504,19 @@
     };
 
     function validateForm() {
+        const phone = document.getElementById('phone').value;
         const isReady = document.getElementById('firstName').value && 
                         state.selectedBlood && 
                         state.selectedDay && 
-                        state.selectedSlot;
+                        state.selectedSlot &&
+                        phone.length > 0;
         document.getElementById('btnSubmit').disabled = !isReady;
     }
 
     document.getElementById('regForm').onsubmit = async (e) => {
         e.preventDefault();
         const btn = document.getElementById('btnSubmit');
-        if(btn.disabled) return; // ป้องกันการกด Enter ซ้ำขณะข้อมูลไม่ครบ
+        if(btn.disabled) return;
 
         btn.disabled = true;
         btn.innerText = "กำลังบันทึก...";
