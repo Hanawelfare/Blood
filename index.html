@@ -1313,21 +1313,21 @@
                     </div>
                     <div class="form-group" id="group-phone">
                         <label class="form-label" for="phone">
-                            <span>เบอร์โทรภายใน (4 หลัก) <span style="color:var(--primary)">*</span></span>
+                            <span>เบอร์โทรภายใน (1-4 หลัก) <span style="color:var(--primary)">*</span></span>
                             <span id="phone-badge" class="phone-status-badge status-pending">
-                                <i data-lucide="clock" size="12"></i> รอระบุ 4 หลัก
+                                <i data-lucide="clock" size="12"></i> รอระบุเบอร์โทร
                             </span>
                         </label>
                         <div class="input-wrapper">
                             <i data-lucide="phone" size="18"></i>
-                            <input type="tel" class="form-control" id="phone" maxlength="4" inputmode="numeric" placeholder="เช่น 1234" oninput="handlePhoneInput(this)">
+                            <input type="tel" class="form-control" id="phone" maxlength="4" inputmode="numeric" placeholder="เช่น 1234 หรือ 123" oninput="handlePhoneInput(this)">
                         </div>
                         <div id="phone-callout" class="phone-callout-hint">
                             <i data-lucide="sparkles" size="16"></i>
-                            <span>ดึงข้อมูลสำเร็จ! <b>กรุณากรอกเบอร์โทรภายใน 4 หลัก</b> ตรงนี้ด้วยนะคะ</span>
+                            <span>ดึงข้อมูลสำเร็จ! <b>กรุณากรอกเบอร์โทรภายใน (1-4 หลัก)</b> ตรงนี้ด้วยนะคะ</span>
                         </div>
                         <div id="phone-error" class="field-error-text">
-                            <i data-lucide="alert-circle" size="14"></i> <span>กรุณากรอกเบอร์โทรภายในให้ครบ 4 หลัก</span>
+                            <i data-lucide="alert-circle" size="14"></i> <span>กรุณากรอกเบอร์โทรภายใน (1-4 หลัก)</span>
                         </div>
                     </div>
                 </div>
@@ -1392,7 +1392,7 @@
                             <i data-lucide="circle" size="14"></i> <span>ชื่อ - แผนก</span>
                         </div>
                         <div class="checklist-item missing" id="chk-phone" onclick="focusField('phone')">
-                            <i data-lucide="alert-circle" size="14"></i> <span>เบอร์โทรภายใน (4 หลัก)</span>
+                            <i data-lucide="alert-circle" size="14"></i> <span>เบอร์โทรภายใน (1-4 หลัก)</span>
                         </div>
                         <div class="checklist-item waiting" id="chk-blood" onclick="focusField('blood-grid-section')">
                             <i data-lucide="circle" size="14"></i> <span>กรุ๊ปเลือด</span>
@@ -1633,7 +1633,7 @@
         const phoneBadge = document.getElementById('phone-badge');
         if (phoneBadge) {
             phoneBadge.className = 'phone-status-badge status-pending';
-            phoneBadge.innerHTML = '<i data-lucide="clock" size="12"></i> รอระบุ 4 หลัก';
+            phoneBadge.innerHTML = '<i data-lucide="clock" size="12"></i> รอระบุเบอร์โทร';
         }
 
         state = { blood: '', day: null, time: '' };
@@ -1710,8 +1710,8 @@
                 lucide.createIcons();
                 validateInput();
 
-                // If phone still empty or invalid, prompt to fill
-                if (!phone.value || phone.value.trim().length !== 4) {
+                // If phone still empty, prompt to fill
+                if (!phone.value || phone.value.trim().length === 0) {
                     if (phoneCallout) phoneCallout.style.display = 'flex';
                     setTimeout(() => {
                         phone.focus();
@@ -1739,8 +1739,8 @@
                     statusBadge.className = 'search-badge-status status-found';
                     statusBadge.innerHTML = '<i data-lucide="check" size="12"></i> พบข้อมูลพนักงาน';
 
-                    // Direct attention to internal phone input
-                    if (!phone.value || phone.value.trim().length !== 4) {
+                    // Direct attention to internal phone input if empty
+                    if (!phone.value || phone.value.trim().length === 0) {
                         if (phoneCallout) phoneCallout.style.display = 'flex';
                         setTimeout(() => {
                             phone.focus();
@@ -1769,7 +1769,7 @@
         }
     }
 
-    // Handle Phone Input with live validation
+    // Handle Phone Input with live validation (allows 1 to 4 digits)
     function handlePhoneInput(el) {
         // Enforce numeric only and max 4 digits
         el.value = el.value.replace(/\D/g, '').slice(0, 4);
@@ -1778,27 +1778,20 @@
         const err = document.getElementById('phone-error');
         const callout = document.getElementById('phone-callout');
 
-        if (val.length === 4) {
+        if (val.length >= 1 && val.length <= 4) {
             el.classList.remove('is-invalid');
             el.classList.add('is-valid');
             if (err) err.classList.remove('show');
             if (callout) callout.style.display = 'none';
             if (badge) {
                 badge.className = 'phone-status-badge status-ok';
-                badge.innerHTML = '<i data-lucide="check" size="12"></i> ครบ 4 หลักแล้ว';
+                badge.innerHTML = `<i data-lucide="check" size="12"></i> ระบุแล้ว (${val})`;
             }
         } else {
             el.classList.remove('is-valid');
-            if (val.length > 0) {
-                if (badge) {
-                    badge.className = 'phone-status-badge status-typing';
-                    badge.innerHTML = `<i data-lucide="edit-2" size="12"></i> กำลังพิมพ์ (${val.length}/4)`;
-                }
-            } else {
-                if (badge) {
-                    badge.className = 'phone-status-badge status-pending';
-                    badge.innerHTML = '<i data-lucide="clock" size="12"></i> รอระบุ 4 หลัก';
-                }
+            if (badge) {
+                badge.className = 'phone-status-badge status-pending';
+                badge.innerHTML = '<i data-lucide="clock" size="12"></i> รอระบุเบอร์โทร';
             }
         }
         lucide.createIcons();
@@ -1925,19 +1918,11 @@
         }
 
         const phone = val('phone');
-        if (!phone) {
+        if (!phone || phone.length === 0) {
             errors.push({ 
                 id: 'phone', 
-                field: 'เบอร์โทรภายใน (4 หลัก)', 
-                message: 'ยังไม่ได้ระบุเบอร์โทรศัพท์ภายใน 4 หลัก (จำเป็นสำหรับประสานงาน/ติดต่อ)', 
-                icon: 'phone', 
-                isPhone: true 
-            });
-        } else if (phone.length < 4) {
-            errors.push({ 
-                id: 'phone', 
-                field: 'เบอร์โทรภายใน (4 หลัก)', 
-                message: `เบอร์โทรภายในต้องครบ 4 หลัก (ปัจจุบันกรอกไว้ ${phone.length} หลัก)`, 
+                field: 'เบอร์โทรภายใน (1-4 หลัก)', 
+                message: 'ยังไม่ได้ระบุเบอร์โทรศัพท์ภายใน (1-4 หลัก)', 
                 icon: 'phone', 
                 isPhone: true 
             });
@@ -1962,7 +1947,7 @@
         
         const isEmpOk = val('empId').length === 6;
         const isNameOk = val('firstName').length > 0 && val('lastName').length > 0 && val('dept').length > 0;
-        const isPhoneOk = val('phone').length === 4;
+        const isPhoneOk = val('phone').length >= 1 && val('phone').length <= 4;
         const isBloodOk = state.blood !== '';
         const isSlotOk = state.day !== null && state.time !== '';
 
@@ -2007,12 +1992,9 @@
             if (isPhoneOk) {
                 chkPhone.className = 'checklist-item done';
                 chkPhone.innerHTML = `<i data-lucide="check-circle-2" size="14"></i> <span>เบอร์ภายใน: ${val('phone')}</span>`;
-            } else if (val('phone').length > 0) {
-                chkPhone.className = 'checklist-item missing';
-                chkPhone.innerHTML = `<i data-lucide="alert-circle" size="14"></i> <span>เบอร์โทร: ขาดอีก ${4 - val('phone').length} หลัก</span>`;
             } else {
                 chkPhone.className = 'checklist-item missing';
-                chkPhone.innerHTML = `<i data-lucide="alert-circle" size="14"></i> <span>เบอร์โทรภายใน (ยังไม่กรอก)</span>`;
+                chkPhone.innerHTML = `<i data-lucide="alert-circle" size="14"></i> <span>เบอร์โทรภายใน (ยังไม่ระบุ)</span>`;
             }
         }
 
