@@ -898,6 +898,207 @@
             70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
+
+        /* ==================== FORM VALIDATION & PHONE UX ==================== */
+        @keyframes errorShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        .shake-field {
+            animation: errorShake 0.4s ease-in-out;
+        }
+
+        .form-control.is-invalid {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            box-shadow: 0 0 0 3.5px rgba(239, 68, 68, 0.15) !important;
+        }
+
+        .form-control.is-valid {
+            border-color: #10b981 !important;
+            background-color: #f0fdf4 !important;
+        }
+
+        @keyframes pulsePhoneHighlight {
+            0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.45); border-color: var(--primary); }
+            70% { box-shadow: 0 0 0 10px rgba(225, 29, 72, 0); border-color: var(--primary); }
+            100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+        }
+
+        .pulse-focus {
+            animation: pulsePhoneHighlight 1.2s ease 2 !important;
+        }
+
+        .field-error-text {
+            color: #dc2626;
+            font-size: 0.78rem;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.35rem;
+        }
+
+        .field-error-text.show {
+            display: flex;
+        }
+
+        /* Phone field badges */
+        .phone-status-badge {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.15rem 0.5rem;
+            border-radius: var(--radius-full);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: all 0.2s ease;
+        }
+
+        .phone-status-badge.status-pending {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #ffedd5;
+        }
+
+        .phone-status-badge.status-typing {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #dbeafe;
+        }
+
+        .phone-status-badge.status-ok {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        /* Auto-search hint callout for phone */
+        .phone-callout-hint {
+            display: none;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-left: 4px solid var(--accent-blue);
+            border-radius: var(--radius-sm);
+            padding: 0.65rem 0.85rem;
+            font-size: 0.82rem;
+            color: #1e40af;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.35rem;
+            animation: slideDown 0.25s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Live Form Validation Checklist */
+        .form-checklist-card {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .checklist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.65rem;
+        }
+
+        .checklist-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 0.45rem;
+        }
+
+        .checklist-item {
+            font-size: 0.76rem;
+            padding: 0.4rem 0.6rem;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border: 1px solid transparent;
+            user-select: none;
+        }
+
+        .checklist-item.done {
+            background: #dcfce7;
+            color: #15803d;
+            border-color: #bbf7d0;
+        }
+
+        .checklist-item.missing {
+            background: #fee2e2;
+            color: #b91c1c;
+            border-color: #fecaca;
+        }
+
+        .checklist-item.waiting {
+            background: #f1f5f9;
+            color: #64748b;
+            border-color: #e2e8f0;
+        }
+
+        .checklist-item:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Validation Error Modal List */
+        .validation-error-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: left;
+            margin: 1rem 0;
+            max-height: 240px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .val-error-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            padding: 0.65rem 0.85rem;
+            background: #fef2f2;
+            border: 1px solid #fee2e2;
+            border-radius: var(--radius-sm);
+            font-size: 0.84rem;
+            color: #991b1b;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .val-error-item:hover {
+            background: #fee2e2;
+        }
+
+        .val-error-item.highlight-phone {
+            background: #fff7ed;
+            border-color: #ffedd5;
+            color: #c2410c;
+        }
+
+        .val-error-item i {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
     </style>
 </head>
 <body>
@@ -918,6 +1119,23 @@
         <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.75rem;">ข้อมูลนัดหมายบริจาคโลหิตได้รับการบันทึกเรียบร้อยแล้ว</p>
         <button class="btn-primary active" style="margin-top: 0;" onclick="closeSuccessModal()">
             <i data-lucide="check" size="18"></i> ดูสถานะการจอง
+        </button>
+    </div>
+</div>
+
+<!-- Validation Error Modal -->
+<div id="validation-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 440px;">
+        <div class="modal-icon-circle" style="background:#fee2e2; color:#dc2626;">
+            <i data-lucide="alert-circle" size="44"></i>
+        </div>
+        <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.35rem; color: #0f172a;">กรุณากรอกข้อมูลให้ครบถ้วน</h2>
+        <p style="color: var(--text-muted); font-size: 0.86rem; line-height: 1.5; margin-bottom: 0.5rem;">
+            ระบบไม่สามารถบันทึกได้ เนื่องจากยังขาดข้อมูลสำคัญดังต่อไปนี้:
+        </p>
+        <div id="validation-error-list" class="validation-error-list"></div>
+        <button class="btn-primary active" style="margin-top: 1rem;" onclick="closeValidationModal()">
+            <i data-lucide="edit-3" size="18"></i> ไประบุข้อมูลที่ขาด
         </button>
     </div>
 </div>
@@ -1020,7 +1238,7 @@
                 <span class="live-dot" title="อัปเดตเรียลไทม์"></span>
             </div>
             <div style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
-                📍 <b>สถานที่:</b> Old lobby Plant2 <br>
+                📍 <b>สถานที่:</b> ลานพักผ่อนม้าหินอ่อนฝั่งอาคาร 4<br>
                 🕒 <b>เวลาเปิดรับ:</b> 09:00 - 11:40 น.<br>
                 💡 <b>คำแนะนำ:</b> กรุณานอนหลับพักผ่อนให้เพียงพออย่างน้อย 6 ชม. และดื่มน้ำ 3-4 แก้วก่อนบริจาคโลหิต
             </div>
@@ -1040,7 +1258,7 @@
 
             <div class="form-grid">
                 <!-- Employee ID with Auto-Search -->
-                <div class="form-group">
+                <div class="form-group" id="group-empId">
                     <label class="form-label">
                         <span>รหัสพนักงาน (6 หลัก) <span style="color:var(--primary)">*</span></span>
                         <small id="emp-search-hint" style="color:var(--text-muted); font-weight:normal; font-size:0.75rem;">ค้นหาอัตโนมัติเมื่อพิมพ์ครบ 6 หลัก</small>
@@ -1052,46 +1270,70 @@
                             <i data-lucide="x" size="16"></i>
                         </button>
                     </div>
+                    <div id="empId-error" class="field-error-text">
+                        <i data-lucide="alert-circle" size="14"></i> <span>กรุณากรอกรหัสพนักงานให้ครบ 6 หลัก</span>
+                    </div>
                 </div>
 
                 <!-- First & Last Name -->
                 <div class="form-grid form-grid-2">
-                    <div class="form-group">
+                    <div class="form-group" id="group-firstName">
                         <label class="form-label">ชื่อ <span style="color:var(--primary)">*</span></label>
                         <div class="input-wrapper">
                             <i data-lucide="user" size="18"></i>
                             <input type="text" class="form-control" id="firstName" placeholder="ชื่อจริง" oninput="validateInput()">
                         </div>
+                        <div id="firstName-error" class="field-error-text">
+                            <i data-lucide="alert-circle" size="14"></i> <span>กรุณาระบุชื่อ</span>
+                        </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="group-lastName">
                         <label class="form-label">นามสกุล <span style="color:var(--primary)">*</span></label>
                         <div class="input-wrapper">
                             <i data-lucide="user" size="18"></i>
                             <input type="text" class="form-control" id="lastName" placeholder="นามสกุล" oninput="validateInput()">
+                        </div>
+                        <div id="lastName-error" class="field-error-text">
+                            <i data-lucide="alert-circle" size="14"></i> <span>กรุณาระบุนามสกุล</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Department & Ext Phone -->
                 <div class="form-grid form-grid-2">
-                    <div class="form-group">
+                    <div class="form-group" id="group-dept">
                         <label class="form-label">แผนก <span style="color:var(--primary)">*</span></label>
                         <div class="input-wrapper">
                             <i data-lucide="building-2" size="18"></i>
-                            <input type="text" class="form-control" id="dept" placeholder="เช่น OP1,IT" oninput="validateInput()">
+                            <input type="text" class="form-control" id="dept" placeholder="เช่น QA, Production, IT" oninput="validateInput()">
+                        </div>
+                        <div id="dept-error" class="field-error-text">
+                            <i data-lucide="alert-circle" size="14"></i> <span>กรุณาระบุแผนก</span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">เบอร์โทรภายใน (4 หลัก) <span style="color:var(--primary)">*</span></label>
+                    <div class="form-group" id="group-phone">
+                        <label class="form-label" for="phone">
+                            <span>เบอร์โทรภายใน (4 หลัก) <span style="color:var(--primary)">*</span></span>
+                            <span id="phone-badge" class="phone-status-badge status-pending">
+                                <i data-lucide="clock" size="12"></i> รอระบุ 4 หลัก
+                            </span>
+                        </label>
                         <div class="input-wrapper">
                             <i data-lucide="phone" size="18"></i>
-                            <input type="tel" class="form-control" id="phone" maxlength="4" inputmode="numeric" placeholder="เช่น 1234" oninput="validateInput()">
+                            <input type="tel" class="form-control" id="phone" maxlength="4" inputmode="numeric" placeholder="เช่น 1234" oninput="handlePhoneInput(this)">
+                        </div>
+                        <div id="phone-callout" class="phone-callout-hint">
+                            <i data-lucide="sparkles" size="16"></i>
+                            <span>ดึงข้อมูลสำเร็จ! <b>กรุณากรอกเบอร์โทรภายใน 4 หลัก</b> ตรงนี้ด้วยนะคะ</span>
+                        </div>
+                        <div id="phone-error" class="field-error-text">
+                            <i data-lucide="alert-circle" size="14"></i> <span>กรุณากรอกเบอร์โทรภายในให้ครบ 4 หลัก</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Blood Group Selection -->
-                <div class="form-group">
+                <div class="form-group" id="blood-grid-section">
                     <label class="form-label">กรุ๊ปเลือด <span style="color:var(--primary)">*</span></label>
                     <div class="blood-grid">
                         <button type="button" class="blood-chip" onclick="setBlood('A', this)">
@@ -1107,12 +1349,18 @@
                             AB <span>Group</span>
                         </button>
                     </div>
+                    <div id="blood-error" class="field-error-text">
+                        <i data-lucide="alert-circle" size="14"></i> <span>กรุณาเลือกกรุ๊ปเลือด</span>
+                    </div>
                 </div>
 
                 <!-- Date Selection -->
-                <div class="form-group">
+                <div class="form-group" id="date-list-section">
                     <label class="form-label">เลือกวันที่สะดวก <span style="color:var(--primary)">*</span></label>
                     <div id="date-list" class="date-cards-grid"></div>
+                    <div id="date-error" class="field-error-text">
+                        <i data-lucide="alert-circle" size="14"></i> <span>กรุณาเลือกวันที่สะดวก</span>
+                    </div>
                 </div>
 
                 <!-- Time Slots Section -->
@@ -1122,11 +1370,43 @@
                         <span id="selected-day-label" style="color:var(--primary); font-size:0.8rem;"></span>
                     </label>
                     <div id="slot-list" class="slot-grid"></div>
+                    <div id="time-error" class="field-error-text">
+                        <i data-lucide="alert-circle" size="14"></i> <span>กรุณาเลือกรอบเวลาที่สะดวก</span>
+                    </div>
+                </div>
+
+                <!-- Live Form Validation Checklist -->
+                <div class="form-checklist-card" id="form-checklist">
+                    <div class="checklist-header">
+                        <div style="display:flex; align-items:center; gap:0.4rem;">
+                            <i data-lucide="clipboard-check" size="16" style="color:var(--primary);"></i>
+                            <span>สถานะความพร้อมการลงทะเบียน</span>
+                        </div>
+                        <span id="checklist-progress-text" style="color:var(--primary); font-weight:700;">0/5 ส่วน</span>
+                    </div>
+                    <div class="checklist-items">
+                        <div class="checklist-item waiting" id="chk-emp" onclick="focusField('empId')">
+                            <i data-lucide="circle" size="14"></i> <span>รหัสพนักงาน</span>
+                        </div>
+                        <div class="checklist-item waiting" id="chk-name" onclick="focusField('firstName')">
+                            <i data-lucide="circle" size="14"></i> <span>ชื่อ - แผนก</span>
+                        </div>
+                        <div class="checklist-item missing" id="chk-phone" onclick="focusField('phone')">
+                            <i data-lucide="alert-circle" size="14"></i> <span>เบอร์โทรภายใน (4 หลัก)</span>
+                        </div>
+                        <div class="checklist-item waiting" id="chk-blood" onclick="focusField('blood-grid-section')">
+                            <i data-lucide="circle" size="14"></i> <span>กรุ๊ปเลือด</span>
+                        </div>
+                        <div class="checklist-item waiting" id="chk-slot" onclick="focusField('date-list-section')">
+                            <i data-lucide="circle" size="14"></i> <span>วันและรอบเวลา</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Submit Button -->
-                <button type="button" class="btn-primary" id="submitBtn" onclick="submitForm()" disabled>
-                    <i data-lucide="send" size="18"></i> ยืนยันการลงทะเบียน
+                <button type="button" class="btn-primary active" id="submitBtn" onclick="submitForm()">
+                    <i data-lucide="send" size="18" id="submit-icon"></i>
+                    <span id="submit-btn-text">ยืนยันการลงทะเบียน</span>
                 </button>
             </div>
         </div>
@@ -1257,8 +1537,8 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbwTOQOH5LJHPTT6obxbWGe_TWytmy37W5_da_0oDmEVkmz84sfgYmGPGMd8CzvohH1D/exec";
     
     const SCHEDULE = [
-        { date: '26 Nov 2026', team: 'Team A', color: '#2563eb', limit: 115 },
-        { date: '11 Dec 2026', team: 'Team B', color: '#e11d48', limit: 115 }
+        { date: '21 Jul 2026', team: 'Team B', color: '#e11d48', limit: 115 },
+        { date: '6 Aug 2026', team: 'Team A', color: '#2563eb', limit: 115 }
     ];
 
     const SLOTS = [
@@ -1339,8 +1619,23 @@
             if (el) {
                 el.value = '';
                 el.disabled = false;
+                el.classList.remove('is-invalid', 'is-valid', 'pulse-focus');
             }
         });
+
+        // Hide all inline error messages
+        document.querySelectorAll('.field-error-text').forEach(err => err.classList.remove('show'));
+        document.querySelectorAll('.form-group').forEach(grp => grp.classList.remove('shake-field'));
+
+        const phoneCallout = document.getElementById('phone-callout');
+        if (phoneCallout) phoneCallout.style.display = 'none';
+
+        const phoneBadge = document.getElementById('phone-badge');
+        if (phoneBadge) {
+            phoneBadge.className = 'phone-status-badge status-pending';
+            phoneBadge.innerHTML = '<i data-lucide="clock" size="12"></i> รอระบุ 4 หลัก';
+        }
+
         state = { blood: '', day: null, time: '' };
         document.querySelectorAll('.blood-chip').forEach(b => b.classList.remove('selected'));
         document.getElementById('slot-section').style.display = 'none';
@@ -1351,6 +1646,7 @@
         
         renderDateOptions();
         validateInput();
+        lucide.createIcons();
     }
 
     function clearEmpInput() {
@@ -1360,6 +1656,8 @@
 
     // Employee ID Auto-Search on Register Page
     async function handleEmpIdChange(el) {
+        // Allow only digits and limit to 6 chars
+        el.value = el.value.replace(/\D/g, '').slice(0, 6);
         const empId = el.value.trim();
         const clearBtn = document.getElementById('empId-clear');
         const statusBadge = document.getElementById('reg-auto-status');
@@ -1370,6 +1668,7 @@
         const lName = document.getElementById('lastName');
         const dept = document.getElementById('dept');
         const phone = document.getElementById('phone');
+        const phoneCallout = document.getElementById('phone-callout');
 
         // Reset locking if user modifies digits to less than 6
         if (empId.length < 6) {
@@ -1377,6 +1676,7 @@
             lName.disabled = false;
             dept.disabled = false;
             statusBadge.style.display = 'none';
+            if (phoneCallout) phoneCallout.style.display = 'none';
             validateInput();
             return;
         }
@@ -1395,16 +1695,30 @@
                 fName.value = nameParts[0] || '';
                 lName.value = nameParts.slice(1).join(' ') || '';
                 dept.value = existing.dept || '';
-                phone.value = existing.phone || '';
-
+                
                 fName.disabled = true;
                 lName.disabled = true;
                 dept.disabled = true;
+
+                if (existing.phone) {
+                    phone.value = existing.phone;
+                    handlePhoneInput(phone);
+                }
 
                 statusBadge.className = 'search-badge-status status-found';
                 statusBadge.innerHTML = '<i data-lucide="check" size="12"></i> พบประวัติเคยลงทะเบียน';
                 lucide.createIcons();
                 validateInput();
+
+                // If phone still empty or invalid, prompt to fill
+                if (!phone.value || phone.value.trim().length !== 4) {
+                    if (phoneCallout) phoneCallout.style.display = 'flex';
+                    setTimeout(() => {
+                        phone.focus();
+                        phone.classList.add('pulse-focus');
+                        setTimeout(() => phone.classList.remove('pulse-focus'), 2500);
+                    }, 200);
+                }
                 return;
             }
 
@@ -1424,6 +1738,16 @@
 
                     statusBadge.className = 'search-badge-status status-found';
                     statusBadge.innerHTML = '<i data-lucide="check" size="12"></i> พบข้อมูลพนักงาน';
+
+                    // Direct attention to internal phone input
+                    if (!phone.value || phone.value.trim().length !== 4) {
+                        if (phoneCallout) phoneCallout.style.display = 'flex';
+                        setTimeout(() => {
+                            phone.focus();
+                            phone.classList.add('pulse-focus');
+                            setTimeout(() => phone.classList.remove('pulse-focus'), 2500);
+                        }, 200);
+                    }
                 } else {
                     // Not found in central sheet -> allow manual entry
                     fName.disabled = false;
@@ -1445,11 +1769,49 @@
         }
     }
 
+    // Handle Phone Input with live validation
+    function handlePhoneInput(el) {
+        // Enforce numeric only and max 4 digits
+        el.value = el.value.replace(/\D/g, '').slice(0, 4);
+        const val = el.value.trim();
+        const badge = document.getElementById('phone-badge');
+        const err = document.getElementById('phone-error');
+        const callout = document.getElementById('phone-callout');
+
+        if (val.length === 4) {
+            el.classList.remove('is-invalid');
+            el.classList.add('is-valid');
+            if (err) err.classList.remove('show');
+            if (callout) callout.style.display = 'none';
+            if (badge) {
+                badge.className = 'phone-status-badge status-ok';
+                badge.innerHTML = '<i data-lucide="check" size="12"></i> ครบ 4 หลักแล้ว';
+            }
+        } else {
+            el.classList.remove('is-valid');
+            if (val.length > 0) {
+                if (badge) {
+                    badge.className = 'phone-status-badge status-typing';
+                    badge.innerHTML = `<i data-lucide="edit-2" size="12"></i> กำลังพิมพ์ (${val.length}/4)`;
+                }
+            } else {
+                if (badge) {
+                    badge.className = 'phone-status-badge status-pending';
+                    badge.innerHTML = '<i data-lucide="clock" size="12"></i> รอระบุ 4 หลัก';
+                }
+            }
+        }
+        lucide.createIcons();
+        validateInput();
+    }
+
     // Set Blood Type
     function setBlood(val, btn) {
         state.blood = val;
         document.querySelectorAll('.blood-chip').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
+        const err = document.getElementById('blood-error');
+        if (err) err.classList.remove('show');
         validateInput();
     }
 
@@ -1492,6 +1854,9 @@
         if (slotSection) slotSection.style.display = 'block';
         if (dayLabel) dayLabel.innerText = `(${state.day.date})`;
         
+        const dateErr = document.getElementById('date-error');
+        if (dateErr) dateErr.classList.remove('show');
+
         validateInput();
     }
 
@@ -1528,33 +1893,256 @@
     function selectTime(timeStr) {
         state.time = timeStr;
         renderTimeSlots();
+        const timeErr = document.getElementById('time-error');
+        if (timeErr) timeErr.classList.remove('show');
         validateInput();
     }
 
-    // Validate Input form
+    // Get detailed list of missing / invalid fields
+    function getFormErrors() {
+        const errors = [];
+        const val = id => (document.getElementById(id) ? document.getElementById(id).value.trim() : '');
+        
+        const empId = val('empId');
+        if (!empId) {
+            errors.push({ id: 'empId', field: 'รหัสพนักงาน', message: 'กรุณากรอกรหัสพนักงาน 6 หลัก', icon: 'id-card' });
+        } else if (empId.length < 6) {
+            errors.push({ id: 'empId', field: 'รหัสพนักงาน', message: `รหัสพนักงานต้องครบ 6 หลัก (ปัจจุบันมี ${empId.length} หลัก)`, icon: 'id-card' });
+        }
+
+        const firstName = val('firstName');
+        const lastName = val('lastName');
+        if (!firstName) {
+            errors.push({ id: 'firstName', field: 'ชื่อ', message: 'กรุณากรอกชื่อจริงของพนักงาน', icon: 'user' });
+        }
+        if (!lastName) {
+            errors.push({ id: 'lastName', field: 'นามสกุล', message: 'กรุณากรอกนามสกุล', icon: 'user' });
+        }
+
+        const dept = val('dept');
+        if (!dept) {
+            errors.push({ id: 'dept', field: 'แผนก', message: 'กรุณาระบุแผนก', icon: 'building-2' });
+        }
+
+        const phone = val('phone');
+        if (!phone) {
+            errors.push({ 
+                id: 'phone', 
+                field: 'เบอร์โทรภายใน (4 หลัก)', 
+                message: 'ยังไม่ได้ระบุเบอร์โทรศัพท์ภายใน 4 หลัก (จำเป็นสำหรับประสานงาน/ติดต่อ)', 
+                icon: 'phone', 
+                isPhone: true 
+            });
+        } else if (phone.length < 4) {
+            errors.push({ 
+                id: 'phone', 
+                field: 'เบอร์โทรภายใน (4 หลัก)', 
+                message: `เบอร์โทรภายในต้องครบ 4 หลัก (ปัจจุบันกรอกไว้ ${phone.length} หลัก)`, 
+                icon: 'phone', 
+                isPhone: true 
+            });
+        }
+
+        if (!state.blood) {
+            errors.push({ id: 'blood-grid-section', field: 'กรุ๊ปเลือด', message: 'กรุณาเลือกกรุ๊ปเลือด (A, B, O, AB)', icon: 'droplet' });
+        }
+
+        if (!state.day) {
+            errors.push({ id: 'date-list-section', field: 'วันที่สะดวก', message: 'กรุณาเลือกวันที่ต้องการเข้าร่วมบริจาคโลหิต', icon: 'calendar' });
+        } else if (!state.time) {
+            errors.push({ id: 'slot-section', field: 'รอบเวลา', message: 'กรุณาเลือกรอบเวลาที่ต้องการจองคิว', icon: 'clock' });
+        }
+
+        return errors;
+    }
+
+    // Validate Input form and update real-time progress checklist
     function validateInput() {
         const val = id => (document.getElementById(id) ? document.getElementById(id).value.trim() : '');
-        const isValid = 
-            val('empId').length === 6 &&
-            val('firstName').length > 0 &&
-            val('lastName').length > 0 &&
-            val('dept').length > 0 &&
-            val('phone').length === 4 &&
-            state.blood !== '' &&
-            state.day !== null &&
-            state.time !== '';
+        
+        const isEmpOk = val('empId').length === 6;
+        const isNameOk = val('firstName').length > 0 && val('lastName').length > 0 && val('dept').length > 0;
+        const isPhoneOk = val('phone').length === 4;
+        const isBloodOk = state.blood !== '';
+        const isSlotOk = state.day !== null && state.time !== '';
+
+        // Auto remove error styles when user fixes fields
+        if (isEmpOk) {
+            document.getElementById('empId')?.classList.remove('is-invalid');
+            document.getElementById('empId-error')?.classList.remove('show');
+        }
+        if (val('firstName').length > 0) {
+            document.getElementById('firstName')?.classList.remove('is-invalid');
+            document.getElementById('firstName-error')?.classList.remove('show');
+        }
+        if (val('lastName').length > 0) {
+            document.getElementById('lastName')?.classList.remove('is-invalid');
+            document.getElementById('lastName-error')?.classList.remove('show');
+        }
+        if (val('dept').length > 0) {
+            document.getElementById('dept')?.classList.remove('is-invalid');
+            document.getElementById('dept-error')?.classList.remove('show');
+        }
+        if (isPhoneOk) {
+            document.getElementById('phone')?.classList.remove('is-invalid');
+            document.getElementById('phone-error')?.classList.remove('show');
+        }
+        if (isBloodOk) {
+            document.getElementById('blood-error')?.classList.remove('show');
+        }
+        if (state.day !== null) {
+            document.getElementById('date-error')?.classList.remove('show');
+        }
+        if (isSlotOk) {
+            document.getElementById('time-error')?.classList.remove('show');
+        }
+
+        // Update Checklist item indicators
+        updateChecklistItem('chk-emp', isEmpOk, isEmpOk ? `รหัส: ${val('empId')}` : 'รหัสพนักงาน (6 หลัก)');
+        updateChecklistItem('chk-name', isNameOk, isNameOk ? `${val('firstName')} (${val('dept')})` : 'ชื่อ - แผนก');
+        
+        // Highlight phone distinctly in checklist
+        const chkPhone = document.getElementById('chk-phone');
+        if (chkPhone) {
+            if (isPhoneOk) {
+                chkPhone.className = 'checklist-item done';
+                chkPhone.innerHTML = `<i data-lucide="check-circle-2" size="14"></i> <span>เบอร์ภายใน: ${val('phone')}</span>`;
+            } else if (val('phone').length > 0) {
+                chkPhone.className = 'checklist-item missing';
+                chkPhone.innerHTML = `<i data-lucide="alert-circle" size="14"></i> <span>เบอร์โทร: ขาดอีก ${4 - val('phone').length} หลัก</span>`;
+            } else {
+                chkPhone.className = 'checklist-item missing';
+                chkPhone.innerHTML = `<i data-lucide="alert-circle" size="14"></i> <span>เบอร์โทรภายใน (ยังไม่กรอก)</span>`;
+            }
+        }
+
+        updateChecklistItem('chk-blood', isBloodOk, isBloodOk ? `กรุ๊ปเลือด ${state.blood}` : 'กรุ๊ปเลือด');
+        updateChecklistItem('chk-slot', isSlotOk, isSlotOk ? `${state.day.date} ${state.time}` : 'วันและรอบเวลา');
+
+        let completedCount = 0;
+        if (isEmpOk) completedCount++;
+        if (isNameOk) completedCount++;
+        if (isPhoneOk) completedCount++;
+        if (isBloodOk) completedCount++;
+        if (isSlotOk) completedCount++;
+
+        const progressText = document.getElementById('checklist-progress-text');
+        if (progressText) {
+            progressText.innerText = `${completedCount}/5 ส่วน`;
+            progressText.style.color = completedCount === 5 ? 'var(--accent-green)' : 'var(--primary)';
+        }
 
         const submitBtn = document.getElementById('submitBtn');
-        if (submitBtn) {
-            submitBtn.disabled = !isValid;
-            submitBtn.classList.toggle('active', isValid);
+        const submitText = document.getElementById('submit-btn-text');
+        if (submitBtn && submitText) {
+            if (completedCount === 5) {
+                submitBtn.classList.add('active');
+                submitText.innerText = 'ยืนยันการลงทะเบียน';
+            } else {
+                submitBtn.classList.add('active');
+                submitText.innerText = `ตรวจสอบและลงทะเบียน (${completedCount}/5)`;
+            }
+        }
+        lucide.createIcons();
+    }
+
+    function updateChecklistItem(id, isOk, text) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (isOk) {
+            el.className = 'checklist-item done';
+            el.innerHTML = `<i data-lucide="check-circle-2" size="14"></i> <span>${text}</span>`;
+        } else {
+            el.className = 'checklist-item waiting';
+            el.innerHTML = `<i data-lucide="circle" size="14"></i> <span>${text}</span>`;
         }
     }
 
-    // Submit Form
+    let firstMissingFieldId = null;
+
+    // Focus & Scroll to field with highlight pulse
+    function focusField(id) {
+        document.getElementById('validation-modal').style.display = 'none';
+        const target = document.getElementById(id);
+        if (!target) return;
+        
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        let input = target.tagName === 'INPUT' ? target : target.querySelector('input');
+        if (input) {
+            setTimeout(() => {
+                input.focus();
+                input.classList.remove('pulse-focus');
+                void input.offsetWidth;
+                input.classList.add('pulse-focus');
+                setTimeout(() => input.classList.remove('pulse-focus'), 2500);
+            }, 250);
+        } else {
+            target.classList.remove('shake-field');
+            void target.offsetWidth;
+            target.classList.add('shake-field');
+        }
+    }
+
+    function closeValidationModal() {
+        document.getElementById('validation-modal').style.display = 'none';
+        if (firstMissingFieldId) {
+            focusField(firstMissingFieldId);
+            firstMissingFieldId = null;
+        }
+    }
+
+    // Submit Form with Comprehensive Validation & Feedback
     async function submitForm() {
-        const submitBtn = document.getElementById('submitBtn');
-        if (submitBtn.disabled) return;
+        const errors = getFormErrors();
+
+        if (errors.length > 0) {
+            // Apply error styles and trigger shake animation on missing fields
+            errors.forEach(err => {
+                const inputEl = document.getElementById(err.id);
+                if (inputEl) {
+                    inputEl.classList.add('is-invalid');
+                    const group = inputEl.closest('.form-group') || inputEl;
+                    group.classList.remove('shake-field');
+                    void group.offsetWidth;
+                    group.classList.add('shake-field');
+                } else {
+                    const section = document.getElementById(err.id);
+                    if (section) {
+                        section.classList.remove('shake-field');
+                        void section.offsetWidth;
+                        section.classList.add('shake-field');
+                    }
+                }
+
+                const errText = document.getElementById(err.id + '-error');
+                if (errText) {
+                    errText.classList.add('show');
+                }
+            });
+
+            // Populate Validation Error Modal
+            const listContainer = document.getElementById('validation-error-list');
+            if (listContainer) {
+                listContainer.innerHTML = errors.map(err => `
+                    <div class="val-error-item ${err.isPhone ? 'highlight-phone' : ''}" onclick="focusField('${err.id}')">
+                        <i data-lucide="${err.icon || 'alert-circle'}" size="18"></i>
+                        <div style="flex:1;">
+                            <strong style="display:block; font-size:0.88rem;">${err.field}</strong>
+                            <span style="font-size:0.8rem; opacity:0.9;">${err.message}</span>
+                        </div>
+                        <i data-lucide="chevron-right" size="14" style="opacity:0.6;"></i>
+                    </div>
+                `).join('');
+            }
+
+            firstMissingFieldId = errors[0].id;
+
+            // Display Modal to inform user clearly
+            document.getElementById('validation-modal').style.display = 'flex';
+            lucide.createIcons();
+            return;
+        }
 
         showLoader('กำลังบันทึกข้อมูลการลงทะเบียน...');
         
@@ -1678,6 +2266,12 @@
                                     <i data-lucide="clock" size="15"></i> รอบเวลา ${found.time} น.
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Location Box -->
+                        <div style="display:flex; align-items:center; gap:0.5rem; background:#f8fafc; padding:0.65rem 0.85rem; border-radius:var(--radius-sm); border:1px solid #e2e8f0; font-size:0.85rem; color:var(--text-main);">
+                            <i data-lucide="map-pin" size="16" style="color:var(--primary); flex-shrink:0;"></i>
+                            <span><b>สถานที่:</b> ลานพักผ่อนม้าหินอ่อนฝั่งอาคาร 4</span>
                         </div>
 
                         <!-- Action buttons for change / edit -->
