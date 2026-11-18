@@ -1099,6 +1099,127 @@
             flex-shrink: 0;
             margin-top: 2px;
         }
+
+        /* ==================== POSTER SHOWCASE & LIGHTBOX ==================== */
+        .poster-card {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: #ffffff;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.5rem;
+        }
+
+        .poster-wrapper {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-height: 520px;
+        }
+
+        .poster-img {
+            width: 100%;
+            height: auto;
+            max-height: 520px;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .poster-wrapper:hover .poster-img {
+            transform: scale(1.015);
+        }
+
+        .poster-hover-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.28);
+            backdrop-filter: blur(2px);
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.25s ease;
+        }
+
+        .poster-wrapper:hover .poster-hover-overlay {
+            opacity: 1;
+        }
+
+        .poster-zoom-pill {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--text-main);
+            padding: 0.55rem 1.15rem;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(6px);
+            transition: transform 0.2s ease;
+        }
+
+        .poster-wrapper:hover .poster-zoom-pill {
+            transform: translateY(0);
+        }
+
+        .poster-action-btn {
+            background: #f1f5f9;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 0.35rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: all 0.2s ease;
+        }
+
+        .poster-action-btn:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: #fecdd3;
+        }
+
+        .poster-modal-dialog {
+            background: white;
+            max-width: 640px;
+            width: 100%;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .poster-modal-header {
+            padding: 0.85rem 1.25rem;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .poster-modal-img {
+            width: 100%;
+            max-height: 75vh;
+            object-fit: contain;
+            display: block;
+            background: #0f172a;
+        }
     </style>
 </head>
 <body>
@@ -1137,6 +1258,28 @@
         <button class="btn-primary active" style="margin-top: 1rem;" onclick="closeValidationModal()">
             <i data-lucide="edit-3" size="18"></i> ไประบุข้อมูลที่ขาด
         </button>
+    </div>
+</div>
+
+<!-- Poster Lightbox Modal -->
+<div id="poster-modal" class="modal-overlay" onclick="closePosterModal(event)">
+    <div class="poster-modal-dialog" onclick="event.stopPropagation()">
+        <div class="poster-modal-header">
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+                <i data-lucide="image" size="18" style="color:var(--primary);"></i>
+                <strong style="font-size:0.95rem;">ภาพประชาสัมพันธ์กิจกรรมบริจาคโลหิต</strong>
+            </div>
+            <button class="icon-btn" onclick="closePosterModal()" title="ปิด" style="width:32px; height:32px;">
+                <i data-lucide="x" size="18"></i>
+            </button>
+        </div>
+        <img id="poster-modal-img" src="poster.jpg" alt="ภาพประชาสัมพันธ์ขนาดเต็ม" class="poster-modal-img">
+        <div style="padding: 0.85rem 1.25rem; background: #ffffff; border-top:1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.82rem; color: var(--text-muted);">© 2026 HANA Microelectronics</span>
+            <button class="btn-primary active" style="margin: 0; padding: 0.55rem 1.25rem; font-size: 0.88rem; width:auto;" onclick="closePosterModal(); navigate('register');">
+                <i data-lucide="calendar-plus" size="16"></i> ไปยังหน้าลงทะเบียนจองคิว
+            </button>
+        </div>
     </div>
 </div>
 
@@ -1225,6 +1368,40 @@
                     <h3 class="feature-title">ตรวจสอบที่ว่าง</h3>
                     <p class="feature-sub">ดูจำนวนโควตาว่างแบบเรียลไทม์</p>
                 </div>
+            </div>
+        </div>
+
+        <!-- Poster Showcase Card -->
+        <div class="card poster-card" style="padding: 1.15rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="megaphone" size="18" style="color: var(--primary);"></i>
+                    <strong style="font-size: 0.95rem;">ภาพประชาสัมพันธ์กิจกรรม</strong>
+                </div>
+                <div style="display:flex; gap:0.4rem; align-items:center;">
+                    <button type="button" class="poster-action-btn" onclick="openPosterModal()" title="ดูภาพขนาดใหญ่">
+                        <i data-lucide="maximize-2" size="14"></i> แตะขยายภาพ
+                    </button>
+                </div>
+            </div>
+
+            <div class="poster-wrapper" onclick="openPosterModal()" title="คลิกเพื่อดูภาพขนาดใหญ่">
+                <img id="home-poster-img" src="poster.jpg" alt="ภาพประชาสัมพันธ์บริจาคโลหิต" class="poster-img" onerror="handlePosterLoadError(this)">
+                <div class="poster-hover-overlay">
+                    <div class="poster-zoom-pill">
+                        <i data-lucide="zoom-in" size="16"></i> แตะเพื่อดูภาพเต็ม
+                    </div>
+                </div>
+            </div>
+
+            <!-- Poster Footer Bar with Quick Register -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px dashed var(--border-color); font-size: 0.82rem;">
+                <span style="color: var(--text-muted); display:flex; align-items:center; gap:0.35rem;">
+                    <i data-lucide="gift" size="15" style="color:var(--primary);"></i> ผู้ร่วมบริจาคจะได้รับของที่ระลึก
+                </span>
+                <button type="button" onclick="navigate('register')" style="color:var(--primary); font-weight:600; background:none; border:none; cursor:pointer; display:flex; align-items:center; gap:0.25rem;">
+                    ลงทะเบียนจองคิว <i data-lucide="arrow-right" size="14"></i>
+                </button>
             </div>
         </div>
 
@@ -1499,6 +1676,56 @@
         </div>
 
         <div id="dash-days-detail"></div>
+
+        <!-- Poster Management Card for Admin -->
+        <div class="card" style="margin-top: 1.5rem; text-align: left;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; padding-bottom:0.75rem; border-bottom:1.5px solid var(--border-color);">
+                <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <i data-lucide="image" size="20" style="color:var(--accent-purple);"></i>
+                    <strong style="font-size:1.05rem;">จัดการภาพประชาสัมพันธ์หน้าแรก</strong>
+                </div>
+                <span class="slot-badge badge-available">เจ้าหน้าที่</span>
+            </div>
+
+            <!-- Preview current poster -->
+            <div style="text-align:center; margin-bottom:1.25rem; background:#f8fafc; padding:1rem; border-radius:var(--radius-md); border:1.5px dashed #cbd5e1;">
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem; font-weight:500;">ภาพที่กำลังแสดงในหน้าแรกปัจจุบัน:</p>
+                <img id="admin-poster-preview" src="poster.jpg" alt="ภาพประชาสัมพันธ์" style="max-height:220px; max-width:100%; border-radius:var(--radius-sm); box-shadow:var(--shadow-sm); object-fit:contain;">
+            </div>
+
+            <!-- Option 1: File Upload -->
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label class="form-label">
+                    <span><b>วิธีที่ 1:</b> เลือกไฟล์ภาพจากเครื่องคอมพิวเตอร์ / มือถือ</span>
+                </label>
+                <input type="file" id="poster-file-input" accept="image/*" class="form-control no-icon" style="padding: 0.65rem;" onchange="handlePosterFileSelect(this)">
+                <small style="font-size:0.75rem; color:var(--text-muted);">เลือกไฟล์ภาพจากเครื่อง ระบบจะเปลี่ยนภาพให้ทันทีอัตโนมัติ</small>
+            </div>
+
+            <div style="text-align:center; color:var(--text-muted); font-size:0.8rem; margin: 0.75rem 0;">— หรือ —</div>
+
+            <!-- Option 2: Image URL -->
+            <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label class="form-label">
+                    <span><b>วิธีที่ 2:</b> ระบุลิงก์รูปภาพ (Image URL)</span>
+                </label>
+                <div class="input-wrapper">
+                    <i data-lucide="link" size="18"></i>
+                    <input type="url" id="poster-url-input" class="form-control" placeholder="วางลิงก์รูปภาพ เช่น https://example.com/poster.jpg">
+                </div>
+                <small style="font-size:0.75rem; color:var(--text-muted);">นำลิงก์รูปภาพจาก Google Drive หรือเว็บฝากรูปมาวาง</small>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+                <button type="button" class="btn-primary active" style="flex:1; margin-top:0; background:var(--accent-purple);" onclick="savePosterUrl()">
+                    <i data-lucide="save" size="16"></i> บันทึกลิงก์ภาพใหม่
+                </button>
+                <button type="button" style="padding:0.75rem 1.15rem; border-radius:var(--radius-md); border:1.5px solid var(--border-color); background:white; color:var(--text-muted); cursor:pointer; font-size:0.85rem; font-family:inherit; font-weight:500; display:flex; align-items:center; gap:0.35rem;" onclick="resetPosterImage()">
+                    <i data-lucide="rotate-ccw" size="16"></i> คืนค่าภาพเริ่มต้น
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Footer Credit Section -->
@@ -1534,11 +1761,16 @@
 
 <!-- Application Logic -->
 <script>
+    // =========================================================================
+    // 🖼️ ตั้งค่าภาพโปสเตอร์ประชาสัมพันธ์หน้าแรก (สามารถเปลี่ยนลิงก์ภาพได้ที่นี่)
+    // =========================================================================
+    const DEFAULT_POSTER_IMAGE = "poster.jpg";
+
     const API_URL = "https://script.google.com/macros/s/AKfycbwTOQOH5LJHPTT6obxbWGe_TWytmy37W5_da_0oDmEVkmz84sfgYmGPGMd8CzvohH1D/exec";
     
     const SCHEDULE = [
-        { date: '26 Nov 2026', team: 'Team A', color: '#e11d48', limit: 115 },
-        { date: '11 Dec 2026', team: 'Team B', color: '#2563eb', limit: 115 }
+        { date: '21 Jul 2026', team: 'Team B', color: '#e11d48', limit: 115 },
+        { date: '6 Aug 2026', team: 'Team A', color: '#2563eb', limit: 115 }
     ];
 
     const SLOTS = [
@@ -2410,9 +2642,98 @@
         if (passInput.value === 'ad2026') {
             passInput.value = '';
             navigate('dashboard');
+            updatePosterDisplays();
         } else {
             alert('รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง');
         }
+    }
+
+    // =========================================================================
+    // 🖼️ Poster Management Logic
+    // =========================================================================
+    function getPosterImage() {
+        return localStorage.getItem('hana_blood_poster') || DEFAULT_POSTER_IMAGE;
+    }
+
+    function updatePosterDisplays() {
+        const posterSrc = getPosterImage();
+        const homeImg = document.getElementById('home-poster-img');
+        const modalImg = document.getElementById('poster-modal-img');
+        const adminImg = document.getElementById('admin-poster-preview');
+        const urlInput = document.getElementById('poster-url-input');
+
+        if (homeImg) homeImg.src = posterSrc;
+        if (modalImg) modalImg.src = posterSrc;
+        if (adminImg) adminImg.src = posterSrc;
+        if (urlInput && !urlInput.value && posterSrc !== DEFAULT_POSTER_IMAGE && !posterSrc.startsWith('data:')) {
+            urlInput.value = posterSrc;
+        }
+    }
+
+    function openPosterModal() {
+        const modal = document.getElementById('poster-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+            lucide.createIcons();
+        }
+    }
+
+    function closePosterModal(e) {
+        const modal = document.getElementById('poster-modal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    function handlePosterFileSelect(input) {
+        const file = input.files && input.files[0];
+        if (!file) return;
+
+        if (file.size > 5 * 1024 * 1024) {
+            alert('ไฟล์ภาพมีขนาดใหญ่เกิน 5MB กรุณาเลือกไฟล์ภาพที่มีขนาดเล็กลง');
+            input.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const base64Data = e.target.result;
+            try {
+                localStorage.setItem('hana_blood_poster', base64Data);
+                updatePosterDisplays();
+                showToast('อัปโหลดและเปลี่ยนภาพประชาสัมพันธ์เรียบร้อยแล้ว');
+            } catch (err) {
+                alert('ไม่สามารถบันทึกภาพลงในแคชเบราว์เซอร์ได้เนื่องจากขนาดไฟล์ใหญ่เกินไป กรุณาใช้ไฟล์ภาพขนาดเล็กลง หรือใช้การระบุลิงก์รูปภาพ (Image URL)');
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function savePosterUrl() {
+        const input = document.getElementById('poster-url-input');
+        const url = (input.value || '').trim();
+        if (!url) {
+            alert('กรุณาระบุ URL ลิงก์รูปภาพ หรือเลือกไฟล์จากเครื่อง');
+            return;
+        }
+        localStorage.setItem('hana_blood_poster', url);
+        updatePosterDisplays();
+        showToast('บันทึกลิงก์ภาพประชาสัมพันธ์ใหม่เรียบร้อยแล้ว');
+    }
+
+    function resetPosterImage() {
+        if (confirm('ต้องการคืนค่าภาพประชาสัมพันธ์เป็นภาพเริ่มต้นใช่หรือไม่?')) {
+            localStorage.removeItem('hana_blood_poster');
+            const fileInput = document.getElementById('poster-file-input');
+            const urlInput = document.getElementById('poster-url-input');
+            if (fileInput) fileInput.value = '';
+            if (urlInput) urlInput.value = '';
+            updatePosterDisplays();
+            showToast('คืนค่าภาพประชาสัมพันธ์เป็นภาพเริ่มต้นแล้ว');
+        }
+    }
+
+    function handlePosterLoadError(img) {
+        img.onerror = null;
+        console.warn('Poster image failed to load:', img.src);
     }
 
     // Helpers
@@ -2449,6 +2770,7 @@
 
     // Initialize on window load
     window.addEventListener('DOMContentLoaded', () => {
+        updatePosterDisplays();
         loadAll();
         setInterval(() => loadAll(false), 60000); // 1 minute auto sync
         lucide.createIcons();
